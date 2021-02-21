@@ -1,0 +1,80 @@
+body {background-color:#000000;color:#FFFFFF;margin:0px;padding:0px;font-size:14px;font-family:Arial;text-shadow: 1px 1px 0px #000000,  -1px 1px 1px #000000,  -1px -1px 1px #000000,  1px -1px 1px #000000, -1px -1px 1px #CCCCCC, 0px 2px 2px #FF0000, 2px 2px 2px #444444;}
+a {color:#6699FF;}
+a:visited {color:#6666FF;}
+a:hover, a:hover:visited {color:#FFFFFF;}
+
+.video_title {font-weight:bold;}
+.video_description {}
+
+
+.headrr {position:relative;top:0px;left:0px;width:100%;height:80px;border-collapse:collapse;}
+.logor {position:absolute;top:0px;left:0px;z-index:1000;}
+.logor_td {text-align:left;width:300px;}
+.right_td {}
+.headrr_sub {width:100%;}
+.nav1 {text-align:right;padding-right:20px;font-size:24px;font-weight:bold;font-family:Arial;}
+.nav1 a {text-decoration:none;}
+.nav2 {text-align:right;padding-right:20px;font-size:14px;}
+
+@media only screen and (max-width: 500px) {
+	.nav1 {font-size:1.2em;}
+	.nav2 {font-size:0.8em;}
+}
+
+
+h1, h2, h3, h4, h5, h6, p, a {position:relative;z-index:1001;}
+
+.negaten {width:0;height:0;border:none;}
+
+
+.playtable {position:absolute;top:120px;left:0;width:100%;}
+.guakamon {border-collapse:collapse;position:absolute;top:0px;left:0;width:728px;height:325px;background-image:url('/gif.gif');background-repeat:repeat;}
+.guakamon_td {text-align:center;vertical-align:top;}
+.rabbass {width:308px;top:10px;position:relative;background-color:#CCCCCC;margin-left:auto;margin-right:auto;}
+.robonomo {color:#000000;background-color:#FFFFFF;padding-left:4px;padding-right:4px;}
+.playtable acronym {border:none;}
+
+.playor {position:relative;width:728px;z-index:2;}
+
+.xplain {width:300px;font-style:italic;color:#CCCCCC;font-size:12px;}
+
+.vidform {font-size:14px;}
+.tittx, .popupx {max-width:320px;width:100%;}
+.descrtx {max-width:320px;width:100%;height:90px;}
+.labezl {text-align:left;vertical-align:top;}
+.uploadthing {max-width:240px;width:100%;}
+
+.poppy_button {border:#AAAAAA solid 1px;border-radius:14px;font-weight:bold;box-shadow: 1px 1px 4px #FFFFFF inset;padding-left:4px;padding-right:4px;}
+.poppy_info {width:300px;border:#AAAAAA solid 1px;z-index:1002;box-shadow: 1px 1px 4px #FFFFFF inset;background-color:#000000;border-radius:14px;padding:8px;}
+
+.bottomio {text-align:center;}
+
+.adta {border-collapse:collapse;}
+.adtabad {vertical-align:top;width:300px;}
+.adtabcn {vertical-align:top;width:128px;text-align:center;}
+
+.error, .uprogress {width:500px;background-color:#444444;border:dotted #FFFFFF 3px;padding:4px;}
+.upstat {text-align:left;}
+.upstatlabel {width:140px;}
+.uplogs {background-color:#444444;border:dotted #FFFFFF 3px;padding:4px;}
+.suspended, .deleted {font-weight:bold;font-size:20px;}
+.reason {font-size:12px;}
+.show_reason {width:300px;background-color:#000000;border:solid #FFFFFF 1px;font-size:12px;padding:4px;}
+
+
+
+
+.chunk_link {text-decoration:none;}
+.chunk_img {border:none;}
+.chunk_time {font-size:12px;}
+.popholder {
+background-color: white;
+opacity: 0;
+-moz-opacity: 0;
+filter: alpha(opacity = 0);
+}
+
+.fluidtable {width:100%;max-width:600px;margin:auto;}
+.fluidbigpic {width:50%;}
+.fluid_bigpic {width:100%;max-width:350px;height:auto;}
+

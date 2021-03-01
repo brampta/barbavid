@@ -4,6 +4,9 @@ if(!defined('SETTINGS_RUN')){
 
     define('SETTINGS_RUN',true);
 
+    $main_domain='barba.local';
+    $site_name='Barbavid';
+
     $admin_ip='x.x.x.x'; //your home ip
     //$upload_exire_after_x_days_of_inactiv=120;
     //$upload_exire_after_x_days_of_inactiv=365*2;
@@ -12,7 +15,7 @@ if(!defined('SETTINGS_RUN')){
     $remove_unseen_vids_after_x_days=4;
     $videokey_exire_after_x_hours=10;
     $dat_system_keep_last_x_baks = 9;
-    $main_domain='barba.local';
+
 
     $dat_system_home=dirname(dirname(__FILE__)).'/dat_system';
     define('DAT_SYSTEM_HOME',$dat_system_home);
@@ -32,6 +35,10 @@ if(!defined('SETTINGS_RUN')){
         'x.x.x.y', //upload or video server
         'x.x.x.z', //another upload or video server
     );
+
+    $sendgrid_api_key='xxxxxxxxxxxxxxx';
+    $email_from='no-reply@barba.local';
+    $email_fromname='Barbavid system mail';
 
 }
 

@@ -46,8 +46,16 @@ if (isset($_GET['mobile']) && 1==2) {
 	echo '</div>';
 	echo '<div style="float:right;">
 		<div class="nav1">';
-			echo '<a href="/">' . $text[1000] . '</a>';
+			echo '<a href="/">home</a>';
+			echo ' | <a href="/upload">' . $text[1000] . '</a>';
 			//echo ' | <a href="/make-money-with-your-uploads">' . $text[1001] . '</a>';
+			if(isset($_SESSION['user_id'])){
+				echo ' | <a href="/user/edit">logged in as '.$_SESSION['name'].'</a>';
+				echo ' | <a href="/user/logout">logout</a>';
+			}else{
+				echo ' | <a href="/user/login">login</a>';
+				echo ' | <a href="/user/register">register</a>';
+			}
 		echo '</div>
 		<div class="nav2">
 			<a href="' . $en_link . '">english</a> | <a href="' . $fr_link . '">français</a>

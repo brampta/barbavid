@@ -25,7 +25,7 @@ function check_prog(id)
     if(curr_uploading==1)
     {        
         getprog(id);
-        var t=setTimeout("check_prog('" + id + "');",1000);
+        var t=setTimeout("check_prog('" + id + "');",3000);
     }
     else
     {

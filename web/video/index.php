@@ -1,5 +1,8 @@
 <?php
 include('../settings.php');
+include('../includes/db.php');
+$db = new Db();
+$db->connect();
 
 ini_set('session.cookie_domain', '.'.$main_domain);
 session_start();
@@ -89,22 +92,36 @@ if(count($exploded_upload)==1){
 //edit upload info
 if ($_SERVER['REMOTE_ADDR'] == $admin_ip) {
     if (isset($_POST['edit'])) {
+        //========replace this by a db update!
+        /*
         $keyvalue_toset_array['title'] = base64_encode(mb_substr($_POST['title'], 0, $maxtitlelen));
         $keyvalue_toset_array['description'] = base64_encode(mb_substr($_POST['description'], 0, $maxdesclen));
         $keyvalue_toset_array['popup'] = base64_encode(mb_substr($_POST['popup_URL'], 0, $maxpopURLlen));
         $keyvalue_toset_array['suspend'] = base64_encode($_POST['suspend']);
         set_elements('uploads_index.dat', $upload_hash, $keyvalue_toset_array);
+        */
+        //=============
+        $keyvalue_toset_array=array();
+        $keyvalue_toset_array['title'] = mb_substr($_POST['title'], 0, $maxtitlelen);
+        $keyvalue_toset_array['description'] = mb_substr($_POST['description'], 0, $maxdesclen);
+        $keyvalue_toset_array['suspend'] = $_POST['suspend'];
+        $result = $db->update('videos',$upload_hash,$keyvalue_toset_array);
     }
 }
 
 
 //get upload info
+//========replace this by a db load
+/*
 $datfile_num = find_place_according_to_index($upload_hash, 'uploads_index.dat');
 $upload_info = get_element_info($upload_hash, $datfile_num);
 if ($upload_info === false) {
     die('invalid url.');
 }
 $upload_info = unserialize($upload_info);
+*/
+//================
+$upload_info = $db->load_by('videos','hash',$upload_hash);
 //print_r($upload_info);
 //==========get upload info
 
@@ -133,7 +150,8 @@ if ($_SERVER['REMOTE_ADDR'] == $admin_ip) {
 
 
 //==============suspend video
-if ($upload_info['suspend'] == '' && $upload_info['file_md5'] != '0') {-
+//this part seems incomplete... :/
+if ($upload_info['suspend'] == '' && $upload_info['file_md5'] != '0') {
     //get video info
     //echo '$upload_info[\'file_md5\']: '.$upload_info['file_md5'].'<br />';
     $datfile_num = find_place_according_to_index($upload_info['file_md5'], 'videos_index.dat');
@@ -158,7 +176,9 @@ if ($upload_info['suspend'] == '' && $upload_info['file_md5'] != '0') {-
 
 
 //==============HTML add hit (Flash player also adds hit!!)
+//disable this, hits wont be saved in the dat system anymore but in some mysql stuff but later..
 //(isset($_GET['mobile']) && $chunknumber<1)
+/*
 if(!isset($_GET['flash']))
 {
 	if ($upload_info['file_md5'] != '0') {
@@ -170,9 +190,11 @@ if(!isset($_GET['flash']))
 		set_elements('uploads_stats_index.dat', $upload_hash, $keyvalue_toset_array);
 	}	
 }
+*/
 //==============HTML add hit 
 
 
+$db->disconnect();
 
 
 echo '<!DOCTYPE html>
@@ -295,12 +317,12 @@ if ($_SERVER['REMOTE_ADDR'] == $admin_ip && !isset($_GET['embed'])) {
 <tr><td class="labezl">' . $text[2] . ':</td><td><input name="title" type="text" class="tittx" value="' . htmlspecialchars(base64_decode($upload_info['title'])) . '" /></td></tr>
 <tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>
 <tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx">' . htmlspecialchars(base64_decode($upload_info['description'])) . '</textarea></td></tr>
-<tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>
+<tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
 
-<tr><td class="labezl">'.$text[15].':</td><td><input name="popup_URL" type="text" class="popupx" value="' . htmlspecialchars(base64_decode($upload_info['popup'])) . '" /></td></tr>
-<tr><td><!-- --></td><td class="xplain">'.$text[16].'</td></tr>
+//$edit_form.= '<tr><td class="labezl">'.$text[15].':</td><td><input name="popup_URL" type="text" class="popupx" value="' . htmlspecialchars(base64_decode($upload_info['popup'])) . '" /></td></tr>
+//<tr><td><!-- --></td><td class="xplain">'.$text[16].'</td></tr>';
 
-<tr><td class="labezl">' . $text[5] . ':</td><td><textarea name="suspend" class="descrtx">' . htmlspecialchars(base64_decode($upload_info['suspend'])) . '</textarea></td></tr>
+$edit_form.= '<tr><td class="labezl">' . $text[5] . ':</td><td><textarea name="suspend" class="descrtx">' . htmlspecialchars(base64_decode($upload_info['suspend'])) . '</textarea></td></tr>
 </table>
 
 <input type="submit" name="edit" value="' . $text[6] . '" />
@@ -404,52 +426,7 @@ else {
 		//THIS IS THE IF WHEN THERE IS A VIDEO!:
 		
 		
-		
-		
-		
-		
-		
-		//==============PUT SOME ADS SO IT CAN MAKE MONEY IF USED A LOT!
-		$show_how_many_pops=2;
-		$adcodes=array();
-		
-		//AN INTERSTITIAL AD FROM revenuehits.com: (taking out, its buggy, keeps not sending me back to the correct page!)
-		//echo "<script data-cfasync='false' type='text/javascript' src='//eclkmpbn.com/adServe/banners?tid=166559_295216_0'></script>";
-		//didnt make any money yet lol. will replace with popunder...
-		$adcodes[]="<!--adcode--><script data-cfasync='false' type='text/javascript' src='//eclkmpbn.com/adServe/banners?tid=166559_295216_3&tagid=2'></script>";
-		
-		//A POPUNDER FROM PROPELLERADS.com
-		$adcodes[]='<!--adcode--><script type="text/javascript" src="//go.oclaserver.com/apu.php?zoneid=798453"></script>';
-		
-		//A POPUP FROM yllix.com:
-		$adcodes[]='<!--adcode--><script type="text/javascript" src="//ylx-4.com/popup.php?section=General&pub=751246&ga=g&show=10"></script>';
-		
-		//popcash.net
-		$adcodes[]='<!--adcode--><script type="text/javascript">
-var uid = "130838";
-var wid = "271228";
-</script>
-<script type="text/javascript" src="//cdn.popcash.net/pop.js"></script>';
 
-
-		//pop a random ad:
-		//echo $adcodes[rand(0,count($adcodes)-1)];
-		
-		//pop x random ads ;):
-		//$rand_keys = array_rand($adcodes, 2);
-		//foreach($rand_keys as $key=>$val)
-		//	echo $adcodes[$val];
-		
-		//Im getting some really dirty ads :( so now I'll stick to 1 company a day
-		//when I get shitty ads, the same company will keep all day so I'll know who it is and take em out
-		$today_num=floor(time()/(3600*24));
-		$adnums=count($adcodes);
-		$lereste=$today_num%$adnums;
-		//echo "picking ad $lereste out of $adnums<br>";
-		echo $adcodes[$lereste];
-		
-		//================END OF AD CODES
-		
 		
 		
 		
@@ -529,9 +506,12 @@ var wid = "271228";
 			
 			
 			//show HTML5 player
+            //popups? no thanks lol! this is not 1990!
 			$popuper='';
-			if($upload_info['popup']!='')
-			{$popuper='onclick="rabbadoo(\''.base64_decode($upload_info['popup']).'\');"';}
+            /*
+            if($upload_info['popup']!='')
+            {$popuper='onclick="rabbadoo(\''.base64_decode($upload_info['popup']).'\');"';}
+            */
 			
 			//fluid player box
 			echo '<div style="max-width:960px;max-height:540px;margin:auto;">

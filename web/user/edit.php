@@ -1,13 +1,13 @@
 <?php
-include('../includes/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 if(isset($_SESSION['user_id']) && isset($_POST['name'])){
     $user_update = $user->update($_SESSION['user_id'],$_POST['name']);
 }
 
-include('../templates/head_start.php');
-include('../templates/head_end.php');
-include('../header.php');
+include(BP.'/include/head_start.php');
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 if(!isset($_SESSION['user_id'])){
     ?>
@@ -35,4 +35,5 @@ if(!isset($_SESSION['user_id'])){
     <?php
 }
 
-include('../templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

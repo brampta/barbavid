@@ -1,13 +1,5 @@
 <?php
-include('settings.php');
-ini_set('session.cookie_domain', '.barbavid.com');
-session_start();
-
-
-$nowtime=time();
-
-include('get_language.php');
-
+include(dirname(dirname(__FILE__)).'/include/init.php');
 
 
 
@@ -15,11 +7,11 @@ echo '<html>
     <head>
         <title>'.$text[2009].'</title>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="/style.css" />
+        <link rel="stylesheet" type="text/css" href="/css/style.css" />
         '.$mobile_stuff_for_head.'
     </head>
     <body>';
-include('header.php');
+include(BP.'/include/header.php');
 
 echo '<br /><br />';
 
@@ -54,9 +46,5 @@ echo '<p>'.make_writeto_string('<script type="text/javascript">
 echo '</td></tr></table>';
 
 
-include('bottom.php');
-echo '</body>
-</html>';
-
-
-?>
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

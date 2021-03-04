@@ -1,5 +1,5 @@
 <?php
-include('includes/init.php');
+include(dirname(dirname(__FILE__)).'/include/init.php');
 
 
 // if($admin_ip==$_SERVER['REMOTE_ADDR'])
@@ -27,7 +27,7 @@ if(isset($_SESSION['user_id'])){
         $upload_code = $upload_code_data_array['code'];
         $db->update('upload_codes',$upload_code_data_array['id'],array());
     }else{
-        $upload_code = bin2hex(random_bytes(64));
+        $upload_code = bin2hex(random_bytes(32));
         $upload_code_data_array=array();
         $upload_code_data_array['user_id']=$_SESSION['user_id'];
         $upload_code_data_array['code']=$upload_code;
@@ -40,18 +40,18 @@ if(isset($_SESSION['user_id'])){
     $db->query($query,$params);
 }
 
-include('templates/head_start.php');
+include(BP.'/include/head_start.php');
 echo '<script type="text/javascript">
             var upload_server = "'.$upload_server.'";
             var main_domain = "'.$main_domain.'";
         </script>
-        <script type="text/javascript" src="/cookiz_js.js"></script>
-        <script type="text/javascript" src="/upload_js.js"></script>
-        <script type="text/javascript" src="/language_upload_js.php?lang='.urlencode($language).'"></script>
-        <script type="text/javascript" src="/maketimus.js"></script>
-        <script type="text/javascript" src="/language_maketimus_js.php?lang='.urlencode($language).'"></script>';
-include('templates/head_end.php');
-include('header.php');
+        <script type="text/javascript" src="/js/cookiz_js.js"></script>
+        <script type="text/javascript" src="/js/upload_js.js"></script>
+        <script type="text/javascript" src="/js/language_upload_js.php?lang='.urlencode($language).'"></script>
+        <script type="text/javascript" src="/js/maketimus.js"></script>
+        <script type="text/javascript" src="/js/language_maketimus_js.php?lang='.urlencode($language).'"></script>';
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 
 if(!isset($_SESSION['user_id'])){
@@ -104,5 +104,5 @@ echo 'target="upload_target" onsubmit="startUpload();"';
     echo '</center>';
 }
 
-
-include('templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

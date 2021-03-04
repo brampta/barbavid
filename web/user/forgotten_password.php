@@ -1,13 +1,13 @@
 <?php
-include('../includes/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 if(isset($_POST['email'])){
     $user_password_reset_email_sending = $user->send_password_reset_email($_POST['email']);
 }
 
-include('../templates/head_start.php');
-include('../templates/head_end.php');
-include('../header.php');
+include(BP.'/include/head_start.php');
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 if(isset($user_password_reset_email_sending) && $user_password_reset_email_sending['success']==true){
     ?>
@@ -22,4 +22,5 @@ if(isset($user_password_reset_email_sending) && $user_password_reset_email_sendi
 </form>
 <?php
 
-include('../templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

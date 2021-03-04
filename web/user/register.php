@@ -1,13 +1,13 @@
 <?php
-include('../includes/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 if(isset($_POST['email'])){
     $user_registration = $user->register($_POST['email'],$_POST['name'],$_POST['password'],$_POST['password2']);
 }
 
-include('../templates/head_start.php');
-include('../templates/head_end.php');
-include('../header.php');
+include(BP.'/include/head_start.php');
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 if(isset($user_registration) && $user_registration['success']==true){
     ?>
@@ -42,4 +42,5 @@ if(isset($user_registration) && $user_registration['success']==true){
     <?php
 }
 
-include('../templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

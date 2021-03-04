@@ -1,5 +1,5 @@
 <?php
-include('../includes/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 $password_reset_code_data=false;
 if(isset($_GET['code'])){
@@ -10,9 +10,9 @@ if($password_reset_code_data && isset($_POST['password'])){
     $user_password_reset = $user->reset_password($_GET['code'],$_POST['password'],$_POST['password2']);
 }
 
-include('../templates/head_start.php');
-include('../templates/head_end.php');
-include('../header.php');
+include(BP.'/include/head_start.php');
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 if(isset($user_password_reset) && $user_password_reset['success']==true){
     ?>
@@ -47,4 +47,5 @@ if(isset($user_password_reset) && $user_password_reset['success']==true){
     }
 }
 
-include('../templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

@@ -1,11 +1,6 @@
 <?php
-include('../settings.php');
-include('../includes/db.php');
-$db = new Db();
-$db->connect();
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
-ini_set('session.cookie_domain', '.'.$main_domain);
-session_start();
 
 // $fakedownloadyellowmessage='Click here to install the missing plugin.';
 
@@ -25,21 +20,13 @@ $fakedownloadlink2='/plugin_installer_v.1.003.php';
 
 
 
-$nowtime = time();
-
-
 $maxtitlelen = 100;
 $maxdesclen = 3000;
 $maxpopURLlen = 1024;
 
 
-include('../get_language.php');
-
-
-include('../dat_system_functions.php');
-
-
-include('../make_link.php');
+include(BP.'/include/dat_system/dat_system_functions.php');
+include(BP.'/include/function/make_link.php');
 
 
 $player = 'https://'.$main_domain.'/player.swf';
@@ -133,7 +120,7 @@ $upload_info = $db->load_by('videos','hash',$upload_hash);
 //==============delete video
 if ($_SERVER['REMOTE_ADDR'] == $admin_ip) {
     if (isset($_POST['delete_video']) && isset($_POST['delete_video_imsure'])) {
-        include('../video_library_manip.php');
+        include(BP.'/include/dat_system/video_library_manip.php');
         remove_upload($upload_info['file_md5'], $upload_hash);
         $keyvalue_toset_array['file_md5'] = '0';
         set_elements('uploads_index.dat', $upload_hash, $keyvalue_toset_array);
@@ -194,24 +181,19 @@ if(!isset($_GET['flash']))
 //==============HTML add hit 
 
 
-$db->disconnect();
 
 
-echo '<!DOCTYPE html>
-<html>
-<head>
-<title>' . htmlspecialchars(base64_decode($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="/style.css" />
-<script type="text/javascript" src="/video_js2.js"></script>
-<script type="text/javascript" src="/language_video_js.php?lang=' . urlencode($language) . '"></script>';
+include(BP.'/include/head_start.php');
+echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>
+<script type="text/javascript" src="/js/video_js2.js"></script>
+<script type="text/javascript" src="/js/language_video_js.php?lang=' . urlencode($language) . '"></script>';
 
 //if (isset($_GET['mobile']) || 1==1) {
     //echo '<meta name="HandheldFriendly" content="True">
     //<meta name="MobileOptimized" content="320">
     //<meta name="viewport" content="width=device-width">';
 //}
-echo $mobile_stuff_for_head;
+
 
 //no idea what that was for??
 //echo '<style type="text/css">
@@ -224,15 +206,12 @@ echo $mobile_stuff_for_head;
  //}
 //</style>';
 
-$remove_scrollbars='';
 $re_embeder='';
 if(isset($_GET['embed']))
 {
-	$remove_scrollbars=' style="overflow:hidden;"';
 	$re_embeder='&embed=1';
 }
-echo '</head>
-<body'.$remove_scrollbars.'>';
+include(BP.'/include/head_end.php');
 	
 	
 	
@@ -272,7 +251,7 @@ echo '</head>
 	
 
 if(!isset($_GET['embed']))
-{include('../header.php');}
+{include(BP.'/include/header.php');}
 
 
 //jumpa popup
@@ -314,15 +293,15 @@ if ($_SERVER['REMOTE_ADDR'] == $admin_ip && !isset($_GET['embed'])) {
     $edit_form = '<div style="overflow:auto;">
     <form method="post">
 <table class="vidform">
-<tr><td class="labezl">' . $text[2] . ':</td><td><input name="title" type="text" class="tittx" value="' . htmlspecialchars(base64_decode($upload_info['title'])) . '" /></td></tr>
+<tr><td class="labezl">' . $text[2] . ':</td><td><input name="title" type="text" class="tittx" value="' . htmlspecialchars(($upload_info['title'])) . '" /></td></tr>
 <tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>
-<tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx">' . htmlspecialchars(base64_decode($upload_info['description'])) . '</textarea></td></tr>
+<tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx">' . htmlspecialchars(($upload_info['description'])) . '</textarea></td></tr>
 <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
 
 //$edit_form.= '<tr><td class="labezl">'.$text[15].':</td><td><input name="popup_URL" type="text" class="popupx" value="' . htmlspecialchars(base64_decode($upload_info['popup'])) . '" /></td></tr>
 //<tr><td><!-- --></td><td class="xplain">'.$text[16].'</td></tr>';
 
-$edit_form.= '<tr><td class="labezl">' . $text[5] . ':</td><td><textarea name="suspend" class="descrtx">' . htmlspecialchars(base64_decode($upload_info['suspend'])) . '</textarea></td></tr>
+$edit_form.= '<tr><td class="labezl">' . $text[5] . ':</td><td><textarea name="suspend" class="descrtx">' . htmlspecialchars(($upload_info['suspend'])) . '</textarea></td></tr>
 </table>
 
 <input type="submit" name="edit" value="' . $text[6] . '" />
@@ -362,7 +341,7 @@ if ($upload_info['suspend'] != '' || $upload_info['file_md5'] == '0') {
         echo '<div class="suspended">' . $text[102] . '</div>';
         echo '<table><tr><td>';
         echo '<div class="reason">' . $text[103] . '</div>';
-        echo '<div class="show_reason">' . base64_decode($upload_info['suspend']) . '</div>';
+        echo '<div class="show_reason">' . ($upload_info['suspend']) . '</div>';
         echo '</td></tr></table>';
     }
     if ($upload_info['file_md5'] == '0') {
@@ -384,11 +363,11 @@ if ($upload_info['suspend'] != '' || $upload_info['file_md5'] == '0') {
 	//=========video is encoding
     echo '<center>';
     echo '<br /><br />' . $text[101] . '<br />';
-    include('../curl.php');
+    include(BP.'/include/function/curl.php');
     $queue_info = '';
     $countturns = 0;
     $maxturns = 3;
-    $queue_url='https://' . $video_info['server'] . '.'.$main_domain.'/queuepos.php?video=' . $upload_info['file_md5'];
+    $queue_url='https://' . $video_info['server'] . '.'.$main_domain.'/curl/queuepos.php?video=' . $upload_info['file_md5'];
     while ($queue_info == '' && $countturns < $maxturns) {
         $countturns++;
         $queue_info = get_content_of_url($queue_url);
@@ -443,7 +422,7 @@ else {
 		$chunk_info='';
 		if($howmany_chunks>1)
 		{$chunk_info='<span style="font-weight:normal;"> (part '.$chunknumber.' of '.$howmany_chunks.')</span>';}
-		echo '<div class="video_title"><a href="/video/'.$upload_hash.'" target="_top">' . htmlspecialchars(base64_decode($upload_info['title'])) .'</a>'. $chunk_info . '</div>';
+		echo '<div class="video_title"><a href="/video/'.$upload_hash.'" target="_top">' . htmlspecialchars(($upload_info['title'])) .'</a>'. $chunk_info . '</div>';
 		
 		if(isset($_GET['flash']))
 		{
@@ -559,7 +538,7 @@ else {
 			if($howmany_chunks>1)
 			{
 				//show chunks page
-				include('../chunkname2time.php');
+				include(BP.'/include/function/chunkname2time.php');
 				
 				//echo '<table style="margin:auto;"><tr>';
 				echo '<div style="margin:auto;">';
@@ -620,7 +599,7 @@ else {
 		
 		//description
 		if(!isset($_GET['embed']))
-		{echo '<div><p>' . nl2br(makeClickableLinks(htmlspecialchars(base64_decode($upload_info['description'])))) . '</p></div>';}
+		{echo '<div><p>' . nl2br(makeClickableLinks(htmlspecialchars(($upload_info['description'])))) . '</p></div>';}
 		
 		
 		//close content container
@@ -1022,10 +1001,8 @@ if(!isset($_GET['embed']))
 
 
 
-	include('../bottom.php');
+	include(BP.'/include/footer.php');
 }
 
 
-echo '</body>
-</html>';
-?>
+include(BP.'/include/page_end.php');

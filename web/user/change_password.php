@@ -1,5 +1,5 @@
 <?php
-include('../includes/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 if(isset($_SESSION['user_id']) && isset($_POST['old_password'])){
     $user_data_array = array();
@@ -7,9 +7,9 @@ if(isset($_SESSION['user_id']) && isset($_POST['old_password'])){
     $password_change = $user->change_password($_SESSION['user_id'],$_POST['old_password'],$_POST['password'],$_POST['password2']);
 }
 
-include('../templates/head_start.php');
-include('../templates/head_end.php');
-include('../header.php');
+include(BP.'/include/head_start.php');
+include(BP.'/include/head_end.php');
+include(BP.'/include/header.php');
 
 if(!isset($_SESSION['user_id'])){
     ?>
@@ -50,4 +50,5 @@ if(!isset($_SESSION['user_id'])){
     }
 }
 
-include('../templates/page_end.php');
+include(BP.'/include/footer.php');
+include(BP.'/include/page_end.php');

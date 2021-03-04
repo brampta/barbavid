@@ -1,5 +1,0 @@
-<?php
-
-include('settings.php');
-
-?>

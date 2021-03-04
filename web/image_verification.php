@@ -1,6 +1,6 @@
 <?php
-ini_set('session.cookie_domain', '.barbavid.com');
-session_start();
+include(dirname(dirname(__FILE__)).'/include/init.php');
+
 // generate 5 digit random number
 $rand = rand(10000, 99999);
 // create the hash for the random number and put it in the session

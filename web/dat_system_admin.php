@@ -1,7 +1,6 @@
 <?php
-include('settings.php');
+include(dirname(dirname(__FILE__)).'/include/init.php');
 
-session_start();
 if(isset($_POST['admin_pass']) && $_POST['admin_pass']==$dat_system_admin_pass)
 {$_SESSION['admin']=1;}
 if(!isset($_SESSION['admin']))
@@ -17,36 +16,20 @@ if(!isset($_SESSION['admin']))
 $indexes = array('uploads_index', 'videos_index', 'uploads_stats_index', 'videokeys_index');
 
 
-
-
-//===========get language
-if (isset($_GET['language'])) {
-    $language = $_GET['language'];
-} else if (isset($_COOKIE['language'])) {
-    $language = $_COOKIE['language'];
-} else {
-    $language = 'en';
-}
-setcookie("language", $language, time() + (4 * 365 * 24 * 3600), '/', '.barbavid.com');
-if (!@include('language_' . urlencode($language) . '.php')) {
-    die('incorrect language');
-}
-//===========get language
-
 //changing for password protect!! IP protect is shit annoying because my IP keeps changing like a beast!!
 //if ($_SERVER['REMOTE_ADDR'] != $admin_ip) {
 //    die('unauthorized');
 //}
 $nowtime = time();
-require('dat_system_functions.php');
-include('video_library_manip.php');
+require(BP.'/include/dat_system/dat_system_functions.php');
+include(BP.'/include/dat_system/video_library_manip.php');
 
 echo '<html>
     <head>
     <title>Barbavid Dat System Admin Panelzz</title>
-    <script type="text/javascript" src="/maketimus.js"></script>
-    <script type="text/javascript" src="/language_maketimus_js.php?lang=' . urlencode($language) . '"></script>
-    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script type="text/javascript" src="/js/maketimus.js"></script>
+    <script type="text/javascript" src="/js/language_maketimus_js.php?lang=' . urlencode($language) . '"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
     </head>
     <body>
     <h1>Barbavid Dat System Admin Panelzz</h1>';
@@ -56,7 +39,7 @@ echo '<html>
 
 
 if (isset($_POST['reset_dat_system']) && isset($_POST['reset_dat_system_imsure1']) && isset($_POST['reset_dat_system_imsure2']) && isset($_POST['reset_dat_system_imsure3'])) {
-    $file = fopen($dat_system_home."/dat_system/busy.dat", "w") or exit("Unable to open file!");
+    $file = fopen(DAT_SYSTEM_HOME."/dat_system/busy.dat", "w") or exit("Unable to open file!");
     flock($file, LOCK_EX) or exit("Unable to lock file!");
     fwrite($file, $nowtime);
     flock($file, LOCK_UN) or exit("Unable to unlock file!");
@@ -64,10 +47,10 @@ if (isset($_POST['reset_dat_system']) && isset($_POST['reset_dat_system_imsure1'
 
     sleep($sleep_howlong_after_settingtobusy);
 
-    exec('rm -R '.$dat_system_home.'/dat_system; mkdir '.$dat_system_home.'/dat_system; cp -R '.$dat_system_home.'/dat_system_orig/* '.$dat_system_home.'/dat_system/');
+    exec('rm -R '.DAT_SYSTEM_HOME.'/dat_system; mkdir '.DAT_SYSTEM_HOME.'/dat_system; cp -R '.DAT_SYSTEM_HOME.'/dat_system_orig/* '.DAT_SYSTEM_HOME.'/dat_system/');
     echo 'Dat System has been reset!<br />';
 
-    $file = fopen($dat_system_home."/dat_system/busy.dat", "w") or exit("Unable to open file!");
+    $file = fopen(DAT_SYSTEM_HOME."/dat_system/busy.dat", "w") or exit("Unable to open file!");
     flock($file, LOCK_EX) or exit("Unable to lock file!");
     fwrite($file, 0);
     flock($file, LOCK_UN) or exit("Unable to unlock file!");
@@ -89,7 +72,7 @@ echo '<form method="post">
 if (isset($_GET['showdat'])) {
     echo '<a href="/dat_system_admin">exit</a>';
     echo '<h4>' . $_GET['showdat'] . '.dat</h4>';
-    $file = fopen($dat_system_home."/dat_system/" . $_GET['showdat'] . ".dat", "r");
+    $file = fopen(DAT_SYSTEM_HOME."/dat_system/" . $_GET['showdat'] . ".dat", "r");
     flock($file, LOCK_SH);
     echo '<table style="background-color:black;">';
     while ($file && !feof($file)) {
@@ -188,7 +171,7 @@ echo '<h5>Barbavid tables</h5>';
 foreach ($indexes as $key => $value) {
     echo '<h4>' . $value . '</h4>';
     $remember_index_dats[$value] = array();
-    $file = fopen($dat_system_home."/dat_system/" . $value . ".dat", "r");
+    $file = fopen(DAT_SYSTEM_HOME."/dat_system/" . $value . ".dat", "r");
     flock($file, LOCK_SH);
     while ($file && !feof($file)) {
         $line_data = trim(fgets($file));
@@ -207,7 +190,7 @@ foreach ($indexes as $key => $value) {
 echo '<h5>system tables</h5>';
 echo '<table><tr><td style="vertical-align:top;">';
 echo '<h4>unique_number</h4>';
-$file = fopen($dat_system_home."/dat_system/unique_number.dat", "r");
+$file = fopen(DAT_SYSTEM_HOME."/dat_system/unique_number.dat", "r");
 flock($file, LOCK_SH);
 while ($file && !feof($file)) {
     $line_data = trim(fgets($file));
@@ -218,7 +201,7 @@ flock($file, LOCK_UN);
 fclose($file);
 echo '</td><td style="vertical-align:top;">';
 echo '<h4>unique_numbers_to_reuse</h4>';
-$file = fopen($dat_system_home."/dat_system/unique_numbers_to_reuse.dat", "r");
+$file = fopen(DAT_SYSTEM_HOME."/dat_system/unique_numbers_to_reuse.dat", "r");
 flock($file, LOCK_SH);
 while ($file && !feof($file)) {
     $line_data = trim(fgets($file));
@@ -229,7 +212,7 @@ flock($file, LOCK_UN);
 fclose($file);
 echo '</td><td style="vertical-align:top;">';
 echo '<h4>busy</h4>';
-$file = fopen($dat_system_home."/dat_system/busy.dat", "r") or exit("Unable to open file!");
+$file = fopen(DAT_SYSTEM_HOME."/dat_system/busy.dat", "r") or exit("Unable to open file!");
 flock($file, LOCK_SH) or exit("Unable to lock file!");
 while (!feof($file)) {
     $line_data = trim(fgets($file));
@@ -260,7 +243,7 @@ echo '<a onclick="keep_only_x_baks();" style="cursor:pointer;">Remove All Backup
     </script><br />';
 
 echo 'current baks:<br />';
-$allcurrentbaks = glob($dat_system_home.'/dat_system_baks/*');
+$allcurrentbaks = glob(DAT_SYSTEM_HOME.'/dat_system_baks/*');
 foreach ($allcurrentbaks as $key => $value) {
     $last_slash = strripos($value, '/');
     $numz = substr($value, $last_slash + 1);
@@ -463,7 +446,7 @@ foreach ($indexes as $keyzz => $valuezz) {
             die('dat system busy.<br />');
         }
 
-        $file = fopen($dat_system_home."/dat_system/busy.dat", "w") or exit("Unable to open file!");
+        $file = fopen(DAT_SYSTEM_HOME."/dat_system/busy.dat", "w") or exit("Unable to open file!");
         flock($file, LOCK_EX) or exit("Unable to lock file!");
         fwrite($file, $nowtime);
         flock($file, LOCK_UN) or exit("Unable to unlock file!");
@@ -473,7 +456,7 @@ foreach ($indexes as $keyzz => $valuezz) {
 
         $count = 0;
 
-        $file = fopen($dat_system_home."/dat_system/temp.dat", "w") or exit("Unable to open file!");
+        $file = fopen(DAT_SYSTEM_HOME."/dat_system/temp.dat", "w") or exit("Unable to open file!");
         fclose($file);
 
         $maxturns = 2000000;
@@ -499,7 +482,7 @@ foreach ($indexes as $keyzz => $valuezz) {
 
 
 
-                        $mycommand = 'cat '.$dat_system_home.'/dat_system/' . $dat1 . '.dat '.$dat_system_home.'/dat_system/' . $dat2 . '.dat > '.$dat_system_home.'/dat_system/temp.dat; rm '.$dat_system_home.'/dat_system/' . $dat2 . '.dat; mv '.$dat_system_home.'/dat_system/temp.dat '.$dat_system_home.'/dat_system/' . $dat1 . '.dat';
+                        $mycommand = 'cat '.DAT_SYSTEM_HOME.'/dat_system/' . $dat1 . '.dat '.DAT_SYSTEM_HOME.'/dat_system/' . $dat2 . '.dat > '.DAT_SYSTEM_HOME.'/dat_system/temp.dat; rm '.DAT_SYSTEM_HOME.'/dat_system/' . $dat2 . '.dat; mv '.DAT_SYSTEM_HOME.'/dat_system/temp.dat '.DAT_SYSTEM_HOME.'/dat_system/' . $dat1 . '.dat';
                         echo $count . '/' . $totalturns . ' - ' . $mycommand . ' - ';
                         exec($mycommand);
 
@@ -513,7 +496,7 @@ foreach ($indexes as $keyzz => $valuezz) {
             }
         }
 
-        $file = fopen($dat_system_home."/dat_system/busy.dat", "w") or exit("Unable to open file!");
+        $file = fopen(DAT_SYSTEM_HOME."/dat_system/busy.dat", "w") or exit("Unable to open file!");
         flock($file, LOCK_EX) or exit("Unable to lock file!");
         fwrite($file, 0);
         flock($file, LOCK_UN) or exit("Unable to unlock file!");

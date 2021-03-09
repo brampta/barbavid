@@ -1,38 +1,30 @@
 <?php
 include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
+include(BP.'/include/function/forms.php');
 
 if(isset($_POST['email'])){
     $user_login = $user->login($_POST['email'],$_POST['password'],isset($_POST['remember_me']));
 }
 
+$page_title = __('login');
 include(BP.'/include/head_start.php');
 include(BP.'/include/head_end.php');
 include(BP.'/include/header.php');
 
-if(isset($user_login) && $user_login['success']==true){
+$message->show_messages();
+
+if(!isset($user_login['success']) || $user_login['success']!=true){
     ?>
-    <p>successfully logged in</p>
-    <?php
-}else{
-    if(isset($user_login) && in_array('email_not_validated',$user_login['errors'])){
-        ?>
-        <p>email not validated</p>
-        <?php
-    }
-    if(isset($user_login) && in_array('invalid_login',$user_login['errors'])){
-        ?>
-        <p>invalid login information</p>
-        <?php
-    }
-    ?>
-    <h1>login</h1>
-    <form method="post">
-        <div><label for="email">email:</label><input id="email" name="email" type="text"></div>
-        <div><label for="password">password:</label><input id="password" name="password" type="password"></div>
-        <div><input type="checkbox" name="remember_me"><label for="remember_me">remember me:</label></div>
-        <div><input type="submit" value="register"></div>
-    </form>
-    <a href="forgotten_password">forgotten password</a>
+    <div class="user_form">
+        <h1><?php echo $page_title ?></h1>
+        <form method="post">
+            <div class="user_form_input"><label for="email"><?php echo __('email:') ?></label><input id="email" name="email" type="text" value="<?php echo reget_post('email') ?>"></div>
+            <div class="user_form_input"><label for="password"><?php echo __('password:') ?></label><input id="password" name="password" type="password" value="<?php echo reget_post('password') ?>"></div>
+            <div class="user_form_input"><label for="remember_me"><?php echo __('remember me:') ?></label><input type="checkbox" id="remember_me" name="remember_me" <?php echo reget_checkbox('remember_me') ?>></div>
+            <div class="user_form_submit"><input type="submit" value="<?php echo __('login') ?>"></div>
+        </form>
+        <div class="user_form_link"><a href="forgotten_password"><?php echo __('forgotten password') ?></a></div>
+    </div>
     <?php
 }
 

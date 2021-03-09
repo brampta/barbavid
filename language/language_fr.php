@@ -1,7 +1,8 @@
 <?php
 
 $text[0] = 'Hébergement vidéo H.264';
-$text[1000] = 'Mettre&#160;en&#160;ligne';
+//$text[1000] = 'Mettre&#160;en&#160;ligne';
+$text[1000] = 'ajouter&#160;une&#160;vidéo';
 $text[1001] = 'Faire&#160;du&#160;$$$!';
 
 
@@ -9,7 +10,8 @@ $text[1001] = 'Faire&#160;du&#160;$$$!';
 $text[1] = 'Fichier';
 $text[2] = 'Titre';
 $text[3] = 'Description';
-$text[4] = 'Mettre en ligne';
+//$text[4] = 'Mettre en ligne';
+$text[4] = 'Ajouter une vidéo';
 $text[5] = 'Suspension';
 $text[6] = 'Enregistrer';
 $text[7] = 'Éffacer le vidéo associé à cette mise en ligne';

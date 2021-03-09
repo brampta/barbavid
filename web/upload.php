@@ -56,7 +56,7 @@ include(BP.'/include/header.php');
 
 if(!isset($_SESSION['user_id'])){
     ?>
-    <p>please login to upload</p>
+    <p class="message error"><?php echo __('please login to upload') ?></p>
     <?php
 }else {
 

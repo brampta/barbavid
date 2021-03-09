@@ -138,6 +138,8 @@ if ($_SERVER['REMOTE_ADDR'] == $admin_ip) {
 
 //==============suspend video
 //this part seems incomplete... :/
+//so I just realilzed this is where the video_info from the dat_system is retrieved,
+//it does not seem to be related to suspending video, I think this comment was mistaken
 if ($upload_info['suspend'] == '' && $upload_info['file_md5'] != '0') {
     //get video info
     //echo '$upload_info[\'file_md5\']: '.$upload_info['file_md5'].'<br />';

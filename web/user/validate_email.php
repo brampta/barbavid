@@ -1,9 +1,11 @@
 <?php
 include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
-$user_logout = $user->logout();
+if(isset($_GET['code'])){
+    $user_validation = $user->validate_email($_GET['code']);
+}
 
-$page_title = __('logout');
+$page_title = __('email validation');
 include(BP.'/include/head_start.php');
 include(BP.'/include/head_end.php');
 include(BP.'/include/header.php');

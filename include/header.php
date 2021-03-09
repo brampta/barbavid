@@ -18,53 +18,38 @@ $array_of_vars_in_url_fr_lang_lnk['language'] = 'fr';
 $rebuilt_varsinurl_fr_lang_lnk = http_build_query($array_of_vars_in_url_fr_lang_lnk);
 $fr_link = '?' . $rebuilt_varsinurl_fr_lang_lnk;
 
-
-//echo '<div style="background-color:yellow;color:black;text-align:center;font-weight:bold;">Barbavid is down for maintenance. The estimated duration of the maintenance is 1 hour.</div>';
-
-
-
-if (isset($_GET['mobile']) && 1==2) {
-    echo '<div style="text-align:right;"><a href="/">' . $text[1000] . '</a> | <a href="' . $en_link . '">english</a> | <a href="' . $fr_link . '">français</a></div>';
-} else {
-
-    //echo '<table class="headrr">
-			//<tr>
-				//<td class="logor_td">
-					//<img src="/barbalogo_resized9.png" alt="Barbavid" class="logor" style="max-width:40%;height:auto;" />
-				//</td>
-				//<td class="right_td">
-					//<table class="headrr_sub">
-						//<tr><td class="nav1"><a href="/">' . $text[1000] . '</a> | <a href="/make-money-with-your-uploads">' . $text[1001] . '</a></td></tr>
-						//<tr><td class="nav2"><a href="' . $en_link . '">english</a> | <a href="' . $fr_link . '">français</a></td></tr>
-					//</table>
-				//</td>
-			//</tr>
-		//</table>';
-	//redo with divs:
-	echo '<div style="float:left;">';
-		//echo '<img src="/barbalogo_resized9.png" alt="Barbavid" class="logor" style="max-width:25%;height:auto;" />';
-		echo $site_name;
-	echo '</div>';
-	echo '<div style="float:right;">
-		<div class="nav1">';
-			echo '<a href="/">home</a>';
-			echo ' | <a href="/upload">' . $text[1000] . '</a>';
-			//echo ' | <a href="/make-money-with-your-uploads">' . $text[1001] . '</a>';
-			if(isset($_SESSION['user_id'])){
-				echo ' | <a href="/user/edit">logged in as '.$_SESSION['name'].'</a>';
-				echo ' | <a href="/user/logout">logout</a>';
-			}else{
-				echo ' | <a href="/user/login">login</a>';
-				echo ' | <a href="/user/register">register</a>';
-			}
-		echo '</div>
-		<div class="nav2">
-			<a href="' . $en_link . '">english</a> | <a href="' . $fr_link . '">français</a>
-		</div>
-		<div style="height:2em;"><!-- --></div>
-	</div>
-	<div style="clear: both;"></div>';
-
-
+$en_class='';
+$fr_class='';
+if($language=='en'){
+    $en_class='selected_lang';
+}else if($language=='fr'){
+    $fr_class='selected_lang';
 }
+
 ?>
+
+<div class="mobinav_toggle like_a" onclick="toggle_mobinav()"><i class="fa fa-bars" aria-hidden="true"></i></div>
+
+<div class="header_container nav1">
+	<ul id="nav">
+		<li><a href="/"><?php echo __('home') ?></a></li>
+		<li><a href="/upload"><?php echo $text[1000] ?></a></li>
+		<?php if(isset($_SESSION['user_id'])){ ?>
+			<li><a href="/user/edit"><?php echo __('logged in as %1',$_SESSION['name']) ?></a></li>
+			<li><a href="/user/logout"><?php echo __('logout') ?></a></li>
+		<?php }else{ ?>
+			<li><a href="/user/login"><?php echo __('login') ?></a></li>
+			<li><a href="/user/register"><?php echo __('register') ?></a></li>
+		<?php } ?>
+		<li><a href="<?php echo $en_link ?>" class="<?php echo $en_class ?>">en</a> <span class="lang_separ">|</span> <a href="<?php echo $fr_link ?>" class="<?php echo $fr_class ?>">fr</a></li>
+	</ul>
+</div>
+
+<div>
+	<div>
+		<img src="/barbalogo_resized9.png" alt="Barbavid" style="max-width:25%;height:auto;" />
+	</div>
+</div>
+
+
+

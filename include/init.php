@@ -15,13 +15,18 @@ if(!defined('INIT_RUN')) {
     include(BP . '/include/procedure/get_language.php');
 
 
-    include(BP . '/include/class/db.php');
-    $db = new Db();
-    $db->connect();
+    if(!isset($nodb)){
+        include(BP . '/include/class/db.php');
+        $db = new Db();
+        $db->connect();
 
-    include(BP . '/include/class/user.php');
-    $user = new User();
-    if(!isset($_SESSION['user_id'])){
-        $user->autologin();
+        include(BP . '/include/class/user.php');
+        $user = new User();
+        if(!isset($_SESSION['user_id'])){
+            $user->autologin();
+        }
     }
+
+    include(BP . '/include/class/message.php');
+    $message = new Message();
 }

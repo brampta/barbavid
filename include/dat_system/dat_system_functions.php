@@ -1,7 +1,7 @@
 <?php
-include(dirname(dirname(__FILE__)).'/init.php');
+//include(dirname(dirname(__FILE__)).'/init.php');
 
-@ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+//@ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 
 $datfiles_size_in_bytes = (1024 * 1024) / 5;
 $sleep_howlong_after_settingtobusy=5;

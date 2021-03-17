@@ -5,8 +5,8 @@ if(array_search($_SERVER['REMOTE_ADDR'],$allowed_ips)===false)
 
 if($_GET['upload']!='' && $_GET['video']!='')
 {
-    include(BP.'/include/dat_system/dat_system_functions.php');
-    include(BP.'/include/dat_system/video_library_manip.php');
+    //include(BP.'/include/dat_system/dat_system_functions.php');
+    //include(BP.'/include/dat_system/video_library_manip.php');
     add_upload($_GET['video'],$_GET['upload']);
     echo 'ok';
 }

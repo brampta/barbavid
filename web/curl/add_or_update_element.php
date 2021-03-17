@@ -27,7 +27,7 @@ $_POST['data']=serialize($upload_info);
 
 if((isset($_POST['hash']) && $_POST['hash']!='') && (isset($_POST['data']) && $_POST['data']!='') && (isset($_POST['index_file']) && $_POST['index_file']!=''))
 {
-    include(BP.'/include/dat_system/dat_system_functions.php');
+    //include(BP.'/include/dat_system/dat_system_functions.php');
     $datfile_num=find_place_according_to_index($_POST['hash'],$_POST['index_file']);
     add_or_update_element($_POST['hash'],$_POST['data'],$datfile_num,$_POST['index_file']);
     echo 'ok';

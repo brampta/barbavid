@@ -67,6 +67,9 @@ class Db{
     }
 
     function update($table_name,$id,$data_array){
+        return $this->update_by($table_name,'id',$id,$data_array);
+    }
+    function update_by($table_name,$column,$id,$data_array){
         $updates=array();
         $params=array();
         foreach($data_array as $key=>$value){
@@ -78,7 +81,7 @@ class Db{
         if(count($updates)>0){
             $updates_string=implode(',',$updates).',';
         }
-        $query="UPDATE ".$this->sanitize_table_name($table_name)." SET ".$updates_string."updated=NOW() WHERE id = ?";
+        $query="UPDATE ".$this->sanitize_table_name($table_name)." SET ".$updates_string."updated=NOW() WHERE ".$this->sanitize_column_name($column)."= ?";
         $result = $this->query($query,$params);
         return $result;
     }
@@ -136,7 +139,13 @@ class Db{
                 //echo "param: ".$p." ".$parameterType."\n";
                 // parameters passed to execute() are input-only parameters, so use
                 // bindValue()
-                $stmt->bindValue($i, $p, $parameterType);
+
+                if(substr($key,0,1)==':'){
+                    $bindname=$key;
+                }else{
+                    $bindname=$i;
+                }
+                $stmt->bindValue($bindname, $p, $parameterType);
                 $i++;
             }
             $stmt->execute($params);

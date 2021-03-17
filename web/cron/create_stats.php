@@ -2,7 +2,7 @@
 //this script create the missing uploads_stats for uploads that dont have it. run once in a while to make sure expire script doesnt miss anything...
 
 require(dirname(dirname(dirname(__FILE__))).'/include/init.php');
-include(BP.'/include/dat_system/dat_system_functions.php');
+//include(BP.'/include/dat_system/dat_system_functions.php');
 
 //ingest index
 $ingest_index=array();

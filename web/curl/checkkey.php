@@ -6,7 +6,7 @@ if(array_search($_SERVER['REMOTE_ADDR'],$allowed_ips)===false)
 
 if($_GET['kn']!='' && $_GET['k']!='')
 {
-    include(BP.'/include/dat_system/dat_system_functions.php');
+    //include(BP.'/include/dat_system/dat_system_functions.php');
     $datfile_num=find_place_according_to_index($_GET['kn'],'videokeys_index.dat');
     $current_key_data=get_element_info($_GET['kn'],$datfile_num);
     if($current_key_data!==false)

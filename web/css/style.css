@@ -213,3 +213,59 @@ input[type=submit] {
     display:inline-block;
     padding:4px;
 }
+.video_suspend_container, .video_error_container {
+    color:red;
+}
+
+.video {
+    max-width:960px;
+    margin:auto;
+}
+.video .title {
+    text-align: left;
+    padding: 0 4px;
+}
+.video .title h1 {
+    margin: 0;
+}
+.video .stats_and_actions {
+    text-align: left;
+    position: relative;
+}
+.video .stats_and_actions .stats {
+    display: inline-block;
+    left:0;
+    padding: 0 4px;
+}
+.video .stats_and_actions .actions {
+    display: inline-block;
+    right:0;
+    text-align: right;
+    position: absolute;
+    padding: 0 4px;
+}
+.video .user_and_subscribe {
+    text-align: left;
+    position: relative;
+    margin-top:20px;
+}
+.video .user_and_subscribe .user {
+    display: inline-block;
+    left:0;
+    padding: 0 4px;
+}
+.video .user_and_subscribe .subscribe {
+    display: inline-block;
+    right:0;
+    text-align: right;
+    position: absolute;
+    padding: 0 4px;
+}
+.video .description {
+    padding: 0 4px;
+    text-align: left;
+    margin-top:20px;
+}
+.video .description p {
+    margin:0;
+}

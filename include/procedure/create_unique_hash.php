@@ -19,7 +19,7 @@ while($gotafreeone==0 && $counturns<$maxturns)
 */
 
 $found_hash='';
-$countturns=0; $maxturns=4;
+$countturns=0; $maxturns=100;
 while($found_hash=='' && $countturns<$maxturns){
     $countturns++;
     $arandomhash=base_convert(mt_rand(0x1D39D3E06400000, 0x41C21CB8E0FFFFFF), 10, 36);

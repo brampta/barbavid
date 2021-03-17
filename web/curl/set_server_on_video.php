@@ -6,7 +6,7 @@ if(array_search($_SERVER['REMOTE_ADDR'],$allowed_ips)===false)
 
 if($_GET['server']!='' && $_GET['video']!='')
 {
-    include(BP.'/include/dat_system/dat_system_functions.php');
+    //include(BP.'/include/dat_system/dat_system_functions.php');
     $keyvalue_toset_array['server']=$_GET['server'];
     if($_GET['chunks']!='')
     {$keyvalue_toset_array['chunks']=unserialize($_GET['chunks']);}

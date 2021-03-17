@@ -1,6 +1,6 @@
 <?php
 include(dirname(dirname(__FILE__)).'/include/init.php');
-include(BP.'/include/dat_system/dat_system_functions.php');
+//include(BP.'/include/dat_system/dat_system_functions.php');
 
 //$datfile_num=find_place_according_to_index('4ekgdlqbsy80','uploads_index.dat');
 //add_or_update_element('yaddiy33adda','datadata333adatadatadatadatadatadatadatadatadat',$datfile_num,'uploads_index.dat');

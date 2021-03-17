@@ -1,7 +1,7 @@
 <?php
 require(dirname(dirname(dirname(__FILE__))).'/include/init.php');
-include(BP.'/include/dat_system/dat_system_functions.php');
-include(BP.'/include/dat_system/video_library_manip.php');
+//include(BP.'/include/dat_system/dat_system_functions.php');
+//include(BP.'/include/dat_system/video_library_manip.php');
 
 
 $linebreak="<br>";

@@ -21,8 +21,8 @@ $indexes = array('uploads_index', 'videos_index', 'uploads_stats_index', 'videok
 //    die('unauthorized');
 //}
 $nowtime = time();
-require(BP.'/include/dat_system/dat_system_functions.php');
-include(BP.'/include/dat_system/video_library_manip.php');
+//require(BP.'/include/dat_system/dat_system_functions.php');
+//include(BP.'/include/dat_system/video_library_manip.php');
 
 echo '<html>
     <head>

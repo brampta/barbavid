@@ -27,8 +27,21 @@ class User{
                     $return_data['errors'][] = 'email_regsitered';
                     $message->add_message('error', __('email already registered'));
                 } else {
+                    //get free user hash
+                    $found_hash='';
+                    $countturns=0; $maxturns=100;
+                    while($found_hash=='' && $countturns<$maxturns){
+                        $countturns++;
+                        $arandomhash=base_convert(mt_rand(0x1D39D3E06400000, 0x41C21CB8E0FFFFFF), 10, 36);
+                        $upload_info_for_hashgive = $db->load_by('users','hash',$arandomhash);
+                        if(!$upload_info_for_hashgive){
+                            $found_hash = $arandomhash;
+                        }
+                    }
+
                     //create user
                     $user_data_array = array();
+                    $user_data_array['hash'] = $found_hash;
                     $user_data_array['email'] = $email;
                     $user_data_array['name'] = $name;
                     $salt = base_convert(mt_rand(0x1D39D3E06400000, 0x41C21CB8E0FFFFFF), 10, 36);;
@@ -101,8 +114,9 @@ class User{
             }else{
                 $return_data['success']=true;
                 $message->add_message('success',__('successfully validated email'));
-                $_SESSION['user_id']=$validation_code_data_array['user_id'];
-                $_SESSION['name']=$user_data_array['name'];
+                //$_SESSION['user_id']=$validation_code_data_array['user_id'];
+                //$_SESSION['name']=$user_data_array['name'];
+                $this->set_user_session($user_data_array);
             }
         }
 
@@ -129,8 +143,9 @@ class User{
                 //well thats it user is valid
                 $return_data['success']=true;
                 $message->add_message('success',__('successfully logged in'));
-                $_SESSION['user_id']=$user_data_array['id'];
-                $_SESSION['name']=$user_data_array['name'];
+                //$_SESSION['user_id']=$user_data_array['id'];
+                //$_SESSION['name']=$user_data_array['name'];
+                $this->set_user_session($user_data_array);
 
                 if($remember_me){
                     $token = bin2hex(random_bytes(32));
@@ -152,7 +167,9 @@ class User{
         global $main_domain, $message;
         $return_data=array('success'=>false,'errors'=>array());
 
-        unset($_SESSION['user_id']);
+        //unset($_SESSION['user_id']);
+        session_unset();
+
         setcookie("remember_me_token", '', time()-3600, '/', '.'.$main_domain);
         $return_data['success']=true;
         $message->add_message('success',__('successfully logged out'));
@@ -177,7 +194,8 @@ class User{
             } else {
                 $return_data['success'] = true;
                 $message->add_message('success', __('successfully udpated user'));
-                $_SESSION['name'] = $user_data_array['name'];
+                //$_SESSION['name'] = $user_data_array['name'];
+                $this->set_user_session($user_data_array);
             }
         }
 
@@ -331,8 +349,9 @@ class User{
                 $user_data_array = $db->load('users',$remember_me_code_data_array['user_id']);
 
                 $return_data['success']=true;
-                $_SESSION['user_id']=$remember_me_code_data_array['user_id'];
-                $_SESSION['name']=$user_data_array['name'];
+                //$_SESSION['user_id']=$remember_me_code_data_array['user_id'];
+                //$_SESSION['name']=$user_data_array['name'];
+                $this->set_user_session($user_data_array);
 
                 //rotate token
                 $token = bin2hex(random_bytes(32));
@@ -365,33 +384,44 @@ class User{
         send_mail($email, $name, $email_from, $email_fromname, $subject, $email_body, false);
     }
 
-    public function validate_value($type,$value){
+    private function validate_value($type,$value){
         global $message;
+        var_dump($type,$value);
 
-        if($type=='username'){
+        if($type=='name'){
             $minlen=2;
             if(mb_strlen($value)<$minlen){
                 $message->add_message('error',__('username needs to be %1 characters or more.',$minlen));
                 return false;
             }
             return true;
-        }
-        if($type=='password'){
+        }else if($type=='password'){
             $minlen=8;
             if(mb_strlen($value)<$minlen){
                 $message->add_message('error',__('password needs to be %1 characters or more.',$minlen));
                 return false;
             }
             return true;
-        }
-        if($type=='email'){
+        }else if($type=='email'){
             if (!filter_var($value, FILTER_VALIDATE_EMAIL)){
                 $message->add_message('error',__('email address is invalid.'));
                 return false;
             }
             return true;
+        }else{
+            $message->add_message('error',__('unknown validation type "%1".',$type));
+            return false;
         }
-        return false;
+    }
+
+    private function set_user_session($user_data_array){
+        global $admin_ids;
+
+        $_SESSION['user_id']=$user_data_array['id'];
+        $_SESSION['name']=$user_data_array['name'];
+        if(isset($admin_ids[$user_data_array['id']])){
+            $_SESSION['mod_level']=$admin_ids[$user_data_array['id']];
+        }
     }
 
 }

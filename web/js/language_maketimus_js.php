@@ -1,6 +1,8 @@
 <?php
-if(!@include('language_'.urlencode($_GET['lang']).'.php'))
-{die('incorrect language');}
+$nodb=true;
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
+//if(!include(BP.'/language/language_'.urlencode($_GET['lang']).'.php'))
+//{die('incorrect language');}
 
 header('Content-type: text/javascript; charset=UTF-8');
 $time_to_live = 2*365*24*3600;

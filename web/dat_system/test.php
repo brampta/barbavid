@@ -1,5 +1,5 @@
 <?php
-include(dirname(dirname(__FILE__)).'/include/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 //include(BP.'/include/dat_system/dat_system_functions.php');
 
 //$datfile_num=find_place_according_to_index('4ekgdlqbsy80','uploads_index.dat');

@@ -1,5 +1,5 @@
 <?php
-include(dirname(dirname(__FILE__)).'/include/init.php');
+include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 
 if(isset($_POST['admin_pass']) && $_POST['admin_pass']==$dat_system_admin_pass)
 {$_SESSION['admin']=1;}
@@ -225,20 +225,20 @@ echo '</td></tr></table>';
 echo '<hr />';
 
 echo '<h4>Backups</h4>';
-echo '<a href="/bakup_dat_system" target="_blank">Backup Dat System</a><br />';
+echo '<a href="/dat_system/bakup_dat_system" target="_blank">Backup Dat System</a><br />';
 echo '<a onclick="keep_only_x_baks();" style="cursor:pointer;">Remove All Backups Except last ' . $dat_system_keep_last_x_baks . '</a>
     <script type="text/javascript">
     function keep_only_x_baks()
     {
         var maybe = confirm(\'are you shurio that you wanged to remove all the bagubbs exxepp the last ' . $dat_system_keep_last_x_baks . '??\');
         if(maybe)
-        {window.open("/keep_only_x_baks");}
+        {window.open("/dat_system/keep_only_x_baks");}
     }
     function restore_bak(thistimez,gofor)
     {
         var maybe = confirm(\'are you shure that you want to roll back the Dat System to \' + thistimez);
         if(maybe)
-        {window.open("/restore_bak?bak=" + gofor);}
+        {window.open("/dat_system/restore_bak?bak=" + gofor);}
     }
     </script><br />';
 

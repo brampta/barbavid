@@ -1,4 +1,6 @@
 <?php
+$sleep_howlong_after_settingtobusy=5;
+
 require(dirname(dirname(dirname(__FILE__))).'/settings.php');
 if($_SERVER['REMOTE_ADDR']!=$admin_ip)
 {die('unauthorized');}

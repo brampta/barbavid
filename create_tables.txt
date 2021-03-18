@@ -1,0 +1,80 @@
+CREATE TABLE `users` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `hash` char(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `email` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `name` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `password_hash` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `salt` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `validated` tinyint(4) NOT NULL,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `users_email` (`email`),
+ UNIQUE KEY `user_hash` (`hash`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+
+CREATE TABLE `password_reset_codes` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `password_reset_code_user_id` (`user_id`),
+ CONSTRAINT `password_reset_code_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+
+CREATE TABLE `remember_me_codes` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `updated` datetime NOT NULL,
+ `created` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `remember_me_code_user_id` (`user_id`),
+ CONSTRAINT `remember_me_code_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+
+CREATE TABLE `upload_codes` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `upload_code_user_id` (`user_id`),
+ CONSTRAINT `upload_code_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+
+CREATE TABLE `validation_codes` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `validation_code_user_id` (`user_id`) USING BTREE,
+ CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+
+CREATE TABLE `videos` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `hash` char(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `file_md5` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `title` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+ `suspend` tinyint(4) NOT NULL,
+ `user_id` int(11) NOT NULL,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ UNIQUE KEY `video_hash` (`hash`),
+ KEY `video_suspend` (`suspend`) USING BTREE,
+ KEY `video_user_id` (`user_id`),
+ CONSTRAINT `video_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

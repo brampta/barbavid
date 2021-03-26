@@ -390,7 +390,7 @@ class User{
 
     private function validate_value($type,$value){
         global $message;
-        var_dump($type,$value);
+        //var_dump($type,$value);
 
         if($type=='name'){
             $minlen=2;

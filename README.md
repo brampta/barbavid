@@ -2,6 +2,7 @@ requirements:
 
 for all servers:
 -allowing files without extension with mod_negociation (at least just for .php files)
+add AddType application/x-httpd-php .php to the /etc/apache2/mods-enabled/mime.conf file
 
 for upload servers:
 -uploadprogress_get_info pecl extension (pecl install uploadprogress)

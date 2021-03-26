@@ -36,6 +36,9 @@ if(!defined('INIT_RUN')) {
 
         include(BP . '/include/class/video.php');
         $video = new Video();
+
+        include(BP . '/include/class/channel.php');
+        $channel = new Channel();
     }
 
     include(BP . '/include/class/message.php');

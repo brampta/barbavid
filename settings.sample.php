@@ -6,6 +6,7 @@ if(!defined('SETTINGS_RUN')){
 
     $main_domain='barba.local';
     $site_name='Barbavid';
+    $logofile='';
 
     $admin_ip='x.x.x.x'; //your home ip
     $admin_ids=array(1=>2,2=>1,3=>1,4=>1); //user_id=>admin level.
@@ -42,6 +43,10 @@ if(!defined('SETTINGS_RUN')){
     $sendgrid_api_key='xxxxxxxxxxxxxxx';
     $email_from='no-reply@barba.local';
     $email_fromname='Barbavid system mail';
+
+
+    //max upload size in MB as shown on homepage
+    $maxmb = 10000;
 
 }
 

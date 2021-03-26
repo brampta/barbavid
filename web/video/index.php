@@ -84,20 +84,34 @@ function can_admin_video(){
 
 //edit upload info
 if (can_admin_video()) {
+
     if (isset($_POST['edit'])) {
         $keyvalue_toset_array=array();
         $keyvalue_toset_array['title'] = mb_substr($_POST['title'], 0, $maxtitlelen);
         $keyvalue_toset_array['description'] = mb_substr($_POST['description'], 0, $maxdesclen);
         $keyvalue_toset_array['suspend'] = $_POST['suspend'];
-        $result = $db->update_by('videos','hash',$upload_hash,$keyvalue_toset_array);
-        if($result==1){
-            $message->add_message('success',__('successfully updated video info'));
-            //update $upload_info with array_merge, will be faster than dumb reget from the database
-            $upload_info=array_merge($upload_info,$keyvalue_toset_array);
-        }else{
-            $message->add_message('error',__('error updating video info'));
+        //get channel ID to set:
+        $channel_data_array=$channel->load_by_hash($_POST['channel']);
+        if(!in_array($_SESSION['user_id'],$channel_data_array['admin_ids'])){
+            $message->add_message('error', __('invalid channel'));
+        }else {
+            $keyvalue_toset_array['channel_id'] = $channel_data_array['id'];
+            $result = $db->update_by('videos', 'hash', $upload_hash, $keyvalue_toset_array);
+            if ($result == 1) {
+                $message->add_message('success', __('successfully updated video info'));
+                //update $upload_info with array_merge, will be faster than dumb reget from the database
+                $upload_info = array_merge($upload_info, $keyvalue_toset_array);
+            } else {
+                $message->add_message('error', __('error updating video info'));
+            }
         }
     }
+
+    //prepare user channel select for form
+    if(!isset($channel_data_array)){
+        $channel_data_array=$channel->load($upload_info['channel_id']);
+    }
+    $channel_select = $channel->get_channel_select('channel','channelgrx',$channel_data_array['hash']);
 }
 
 
@@ -182,6 +196,10 @@ if (can_admin_video() && !isset($_GET['embed'])) {
 <tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>
 <tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx">' . htmlspecialchars(($upload_info['description'])) . '</textarea></td></tr>
 <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+
+$edit_form.='<tr><td class="labezl">' . __('Channel') . ':</td><td>'.$channel_select.'</td></tr>
+        <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+
 $edit_form.= '<tr><td class="labezl">' . $text[5] . ':</td><td>';
 //$edit_form.='<textarea name="suspend" class="descrtx">' . htmlspecialchars(($upload_info['suspend'])) . '</textarea>';
 $edit_form.='<div><input type="radio" name="suspend" value="0"';if($upload_info['suspend']==0){$edit_form.=' checked="checked"';}$edit_form.='>ok</div>';
@@ -234,7 +252,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
 	
     echo '</center>';
 
-    echo '<br />' . $edit_form . $delete_form;
+    //echo '<br />' . $edit_form . $delete_form;
 } else if (substr($video_info['server'], 0, 6) == 'upload') {
 
 	//=========video is encoding=======
@@ -264,7 +282,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
     }
     echo '</center>';
 
-    echo '<br />' . $edit_form;
+    //echo '<br />' . $edit_form;
 } else if (substr($video_info['server'], 0, 15) == 'failedencoding_') {
     echo '<center>';
     echo '<br /><br /><br />';
@@ -275,7 +293,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
     ?>
 
     <!-- open content container -->
-    <div style="width:100%;text-align:center;" class="video">
+    <div class="video">
 
         <?php
         //=========new player!!!
@@ -405,7 +423,9 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
             <div class="user">
                 <?php
                 //user
-                echo '<a href="/user/'.$user_data_array['hash'].'">'.htmlspecialchars($user_data_array['name']).'</a>';
+                //echo '<a href="/user/'.$user_data_array['hash'].'">'.htmlspecialchars($user_data_array['name']).'</a>';
+                //just show channel now..
+                echo '<a href="/channel/'.$channel_data_array['hash'].'">'.htmlspecialchars($channel_data_array['name']).'</a>';
                 ?>
             </div>
             <div class="subscribe">
@@ -434,7 +454,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
 }
 
 if(!isset($_GET['embed'])) {
-    echo $edit_form . $delete_form;
+    echo '<div class="video_edit">'.$edit_form . $delete_form.'</div>';
 
     //comments.. coming soon...
 

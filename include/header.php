@@ -34,6 +34,7 @@ if($language=='en'){
 	<ul id="nav">
 		<li><a href="/"><?php echo __('home') ?></a></li>
 		<li><a href="/upload"><?php echo $text[1000] ?></a></li>
+        <li><a href="/channel/list"><?php echo __('channels') ?></a></li>
 		<?php if(isset($_SESSION['user_id'])){ ?>
 			<li><a href="/user/edit"><?php echo __('logged in as %1',$_SESSION['name']) ?></a></li>
 			<li><a href="/user/logout"><?php echo __('logout') ?></a></li>
@@ -47,7 +48,7 @@ if($language=='en'){
 
 <div>
 	<div>
-		<img src="/barbalogo_resized9.png" alt="Barbavid" style="max-width:25%;height:auto;" />
+		<?php if($logofile){?><img src="<?php echo  $logofile ?>" alt="<?php echo  $site_name ?>" style="max-width:25%;height:auto;" /><?php } ?>
 	</div>
 </div>
 

@@ -14,9 +14,7 @@ include(dirname(dirname(__FILE__)).'/include/init.php');
 // }
 
 
-//$maxmb = 3.5*1024;
-//$maxmb = 3*1024;
-$maxmb = 10000;
+
 
 $UPLOAD_IDENTIFIER=base_convert(mt_rand(0x1D39D3E06400000, 0x41C21CB8E0FFFFFF), 10, 36);
 
@@ -38,6 +36,9 @@ if(isset($_SESSION['user_id'])){
     $query='DELETE FROM upload_codes WHERE created < (NOW() - INTERVAL 24 HOUR)';
     $params=array();
     $db->query($query,$params);
+
+    //prepare user channel select for form
+    $channel_select = $channel->get_channel_select('channel','channelgrx');
 }
 
 include(BP.'/include/head_start.php');
@@ -57,6 +58,10 @@ include(BP.'/include/header.php');
 if(!isset($_SESSION['user_id'])){
     ?>
     <p class="message error"><?php echo __('please login to upload') ?></p>
+    <?php
+}else if(!$channel_select){
+    ?>
+    <p class="message error"><?php echo __('you need to create at least 1 channel to upload a video. %1click here to create a channel%2','<a href="/channel/edit">','</a>') ?></p>
     <?php
 }else {
 
@@ -79,6 +84,10 @@ echo 'target="upload_target" onsubmit="startUpload();"';
             <tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>
             <tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx"></textarea></td></tr>
             <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+
+    echo '<tr><td class="labezl">' . __('Channel') . ':</td><td>'.$channel_select.'</td></tr>
+            <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+
     //echo '<tr><td class="labezl">' . $text[15] . ' <div style="position:relative;display:inline;"><span onmouseover="document.getElementById(\'popup_explain\').style.display=\'block\';" onmouseout="document.getElementById(\'popup_explain\').style.display=\'none\';" style="cursor:pointer;" class="poppy_button">?</span><div id="popup_explain" onmouseout="document.getElementById(\'popup_explain\').style.display=\'none\';" style="display:none;position:absolute;" class="poppy_info">' . $text[17] . '</div></div>:</td><td><input name="popup_URL" type="text" class="popupx" onchange="remember_popup_URL(&quot;popup_URL_input&quot;)" id="popup_URL_input" /><script>populate_popup_URL("popup_URL_input");</script></td></tr>
     //        <tr><td><!-- --></td><td class="xplain">' . $text[16] . '</td></tr>';
     echo '</table>

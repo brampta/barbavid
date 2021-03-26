@@ -164,8 +164,8 @@ class Db{
                 return $stmt->rowCount();
             }
         } catch(Exception $e){
-            $stmt->debugDumpParams();
             echo 'Exception -> '; var_dump($e->getMessage());
+            $stmt->debugDumpParams();
             echo 'Params: '; var_dump($params);
             $this->lastErrorMessage=$e->getMessage();
             return false;

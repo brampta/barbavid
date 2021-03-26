@@ -4,7 +4,9 @@
 class Video{
 
     public function get_home_videos($page,$perpage){
-        $options=array('base_url'=>'');
+        $options=array(
+                'base_url'=>''
+        );
         return $this->get_videos($page,$perpage,$options);
     }
 
@@ -17,8 +19,12 @@ class Video{
         return $this->get_videos($page,$perpage,$options);
     }
 
-    public function get_channel_videos($channel_data_array,$page,$perpage){
-        $options=array('channel'=>$channel_data_array['id'],'base_url'=>'/channel/'.$channel_data_array['hash']);
+    public function get_channel_videos($channel_data_array,$page=1,$perpage=50,$include_suspended=false){
+        $options=array(
+            'channel'=>$channel_data_array['id'],
+            'base_url'=>'/channel/'.$channel_data_array['hash'],
+            'include_suspended'=>$include_suspended
+        );
         return $this->get_videos($page,$perpage,$options);
     }
 
@@ -32,8 +38,11 @@ class Video{
             $user_id_clause=' && user_id = :user_id ';
             $params[':user_id']=$options['user'];
         }
+        $channel_id_clause='';
         if(isset($options['channel'])){
             //coming soon... will need to first join channel asso table then add channel_id clause and param
+            $channel_id_clause=' && channel_id = :channel_od ';
+            $params[':channel_od']=$options['channel'];
         }
 
         $suspended_clause=' && suspend = 0 ';
@@ -41,7 +50,7 @@ class Video{
             $suspended_clause='';
         }
 
-        $where = 'WHERE 1=1'.$user_id_clause.$suspended_clause;
+        $where = 'WHERE 1=1'.$user_id_clause.$channel_id_clause.$suspended_clause;
         $order = 'ORDER BY created DESC';
 
         $start_at=($page-1)*$perpage;
@@ -54,6 +63,7 @@ class Video{
         //var_dump($query);
         $count_videos=$db->query($query,$params);
         $count_videos=$count_videos['request_result'][0]['totalvideos'];
+        $videos['total_videos']=$count_videos;
         $videos['total_pages']=ceil($count_videos/$perpage);
 
         $videos['base_url']=$options['base_url'];
@@ -111,6 +121,9 @@ class Video{
     }
 
     private function make_pagination($this_page,$total_pages,$base_url){
+        if($total_pages==1){
+            return '';
+        }
         $prev_page_link='';
         if($this_page>1){
             $prev_page_url=$base_url.'/page/'.($this_page-1);

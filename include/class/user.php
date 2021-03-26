@@ -28,6 +28,7 @@ class User{
                     $message->add_message('error', __('email already registered'));
                 } else {
                     //get free user hash
+                    /*
                     $found_hash='';
                     $countturns=0; $maxturns=100;
                     while($found_hash=='' && $countturns<$maxturns){
@@ -38,6 +39,9 @@ class User{
                             $found_hash = $arandomhash;
                         }
                     }
+                    */
+                    $table_for_hash='users';
+                    include(BP.'/include/procedure/create_unique_hash.php');
 
                     //create user
                     $user_data_array = array();

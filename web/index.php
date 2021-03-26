@@ -12,7 +12,7 @@ include(BP.'/include/head_end.php');
 include(BP.'/include/header.php');
 
 ?>
-<p class="welcome"><?php echo __('Welcome to %1',$site_name) ?></p>
+<p class="page_title"><?php echo __('Welcome to %1',$site_name) ?></p>
 <?php
 
 $video->show_videos($videos);

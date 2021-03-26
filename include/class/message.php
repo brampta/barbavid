@@ -14,7 +14,7 @@ class Message{
     public function show_messages(){
         foreach($this->messages as $message){
             ?>
-            <p class="message <?php echo $message['type'] ?>"><?php echo $message['message'] ?>
+            <p class="message <?php echo $message['type'] ?>"><?php echo $message['message'] ?></p>
             <?php
         }
     }

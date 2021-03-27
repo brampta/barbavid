@@ -21,7 +21,7 @@ function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $mes
     try {
         $response = $sendgrid->send($email);
 
-        /*
+
         echo "<h4>status code</h4>";
         print $response->statusCode() . "\n";
         echo "<h4>headers</h4>";
@@ -29,11 +29,17 @@ function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $mes
         echo "<h4>body</h4>";
         print $response->body() . "\n";
         echo "<hr>";
-        */
-        $message->add_message('notice',__('sendgrid responded with %1',$response->statusCode()));
+
+        if(substr($response->statusCode(),0,1)=='2'){
+            $message_type='success';
+        }else{
+            $message_type='notice';
+        }
+        $message->add_message($message_type,__('sendgrid responded with status code: %1',$response->statusCode()));
 
         return $response;
     } catch (Exception $e) {
         echo 'Caught exception: '. $e->getMessage() ."\n";
+        $message->add_message('error',__('Caught exception: ').$e->getMessage());
     }
 }

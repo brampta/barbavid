@@ -58,21 +58,6 @@ class User{
                         $return_data['errors'][] = 'insert_error';
                         $message->add_message('error', __('database error'));
                     } else {
-                        /*
-                        //create validation code, and send validation email
-                        $validation_code = bin2hex(random_bytes(32));
-                        $validation_code_data_array = array();
-                        $validation_code_data_array['user_id'] = $id;
-                        $validation_code_data_array['code'] = $validation_code;
-                        $id = $db->insert('validation_codes', $validation_code_data_array);
-                        ob_start();
-                        include(BP . '/include/email/email_validation.php');
-                        $email_body = ob_get_contents();
-                        ob_end_clean();
-                        $subject = 'email validation';
-                        include(BP . '/include/function/mail.php');
-                        send_mail($email, $name, $email_from, $email_fromname, $subject, $email_body, false);
-                        */
                         $this->do_send_validation_email($id, $email, $name);
 
                         $return_data['success'] = true;
@@ -222,7 +207,7 @@ class User{
             $password_reset_code_data_array['code'] = $password_reset_code;
             $id = $db->insert('password_reset_codes', $password_reset_code_data_array);
             ob_start();
-            include(BP . '/include/email/reset_password.php');
+            include(BP . '/include/email/user/reset_password.php');
             $email_body = ob_get_contents();
             ob_end_clean();
             $subject = 'email validation';

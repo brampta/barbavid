@@ -71,3 +71,4 @@
 "Channel","Chaîne"
 "you need to create at least 1 channel to upload a video. %1click here to create a channel%2","vous devez créer au moins 1 chaîne avant de mettre en ligne un vidéo. %1cliquez ici pour créer une chaîne%2"
 "invalid channel","chaîne invalide"
+"Caught exception: ","Une erreur est survenue: "

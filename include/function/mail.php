@@ -2,7 +2,7 @@
 
 
 function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $message_text){
-    global $sendgrid_api_key;
+    global $sendgrid_api_key, $message;
 
     require_once (dirname(dirname(__FILE__)) . '/sendgrid-php/sendgrid-php.php');
     $email = new \SendGrid\Mail\Mail();
@@ -30,6 +30,7 @@ function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $mes
         print $response->body() . "\n";
         echo "<hr>";
         */
+        $message->add_message('notice',__('sendgrid responded with %1',$response->statusCode()));
 
         return $response;
     } catch (Exception $e) {

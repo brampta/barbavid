@@ -27,7 +27,7 @@ if(!isset($user_password_reset) || $user_password_reset['success']!=true){
             <form method="post">
                 <div class="user_form_input"><label for="password"><?php echo __('new password:') ?></label><input id="password" name="password" type="password" value="<?php echo reget_post('password') ?>"></div>
                 <div class="user_form_input"><label for="password2"><?php echo __('retype new password:') ?></label><input id="password2" name="password2" type="password" value="<?php echo reget_post('password2') ?>"></div>
-                <div class="user_form_submit><input type="submit" value="<?php echo __('save') ?>"></div>
+                <div class="user_form_submit"><input type="submit" value="<?php echo __('save') ?>"></div>
             </form>
         </div>
         <?php

@@ -50,8 +50,8 @@ function remove_upload($hash,$upload)
 		
 		$actual_server=$data_array['server'];
 		
-		if(stripos($actual_server,'failedencoding')!==false || stripos($actual_server,'uploadserver')!==false)
-		{$actual_server='videohost'.preg_replace("/[^0-9]/","", $actual_server);}
+		if(stripos($actual_server,'failedencoding')!==false || stripos($actual_server,'upload')!==false)
+		{$actual_server='video'.preg_replace("/[^0-9]/","", $actual_server);}
 		
         $instruct_url='https://'.$actual_server.'.'.$main_domain.'/delete.php?video='.urlencode($hash);
 		//echo '$instruct_url: '.$instruct_url.'<br />';

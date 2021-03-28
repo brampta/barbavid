@@ -45,7 +45,7 @@ class Video{
             $params[':channel_od']=$options['channel'];
         }
 
-        $suspended_clause=' && suspend = 0 ';
+        $suspended_clause=' && ready = 1 && suspend = 0 ';
         if(isset($options['include_suspended']) && $options['include_suspended']==true){
             $suspended_clause='';
         }
@@ -92,6 +92,8 @@ class Video{
         $datfile_num = find_place_according_to_index($upload_info['file_md5'], 'videos_index.dat');
         $video_info = get_element_info($upload_info['file_md5'], $datfile_num);
 
+        $videourl = 'https://' . $main_domain.'/video/' . $upload_info['hash'];
+
         $suspended='';
         if($upload_info['suspend']!=0){
             $suspended='<div class="video_suspend_container">'.__('suspended').'</a></div>';
@@ -103,18 +105,34 @@ class Video{
             $video_not_found = '<div class="video_error_container">'.__('error, video not found').'</a></div>';
         }else{
             $video_info = unserialize($video_info);
-            //print_r($video_info);
-            $videourl = 'https://' . $main_domain.'/video/' . $upload_info['hash'];
-            $thumburl = 'https://' . $video_info['server'] . '.'.$main_domain.'/thumb?video=' . $upload_info['file_md5'] . '&chunk=' . $video_info['chunks'][1];
+            //var_dump($video_info);
 
-            $video_details='<div class="video_thumb_container"><a href="'.$videourl.'"><img class="video_thumb" src="'.$thumburl.'"></a></div>
+            $ready='';
+            $thumb_img='';
+            if($upload_info['ready']==1){
+                $thumburl = 'https://' . $video_info['server'] . '.'.$main_domain.'/thumb?video=' . $upload_info['file_md5'] . '&chunk=' . $video_info['chunks'][1];
+                $thumb_img='<div class="video_thumb_container"><a href="'.$videourl.'"><img class="video_thumb" src="'.$thumburl.'"></a></div>';
+            }else{
+                if(isset($video_info['server']) && substr($video_info['server'], 0, 6) == 'upload'){
+                    $reason=__('still encoding');
+                }else if(isset($video_info['server']) && substr($video_info['server'], 0, 15) == 'failedencoding_'){
+                    $reason=__('encoding failed');
+                }else{
+                    $reason=__('unknown error');
+                }
+                $ready='<div class="video_suspend_container">'.$reason.'</a></div>';
+            }
+
+            //print_r($video_info);
+
+            $video_details='
             <div class="video_title_container"><a href="'.$videourl.'">'.htmlspecialchars($upload_info['title']).'</a></div>';
         }
 
 
 
         $html='<div class="video_thumb">
-            '.$video_details.$suspended.$video_not_found.'
+            '.$thumb_img.$video_details.$suspended.$video_not_found.$ready.'
         </div>';
 
         return $html;

@@ -18,6 +18,11 @@ main site:
 
 upload server: 
 -create conf.php based on conf.sample.php
+-note that upload server must have domains like upload1.maindomain.com, upload2.maindomain.com and so on..
+
+video server:
+-create conf.php based on conf.sample.php
+-domains must be like video1.maindomain.com, video2.maindomain.com, etc...
 
 Cronjobs:
 

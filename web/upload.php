@@ -93,7 +93,7 @@ echo 'target="upload_target" onsubmit="startUpload();"';
     echo '</table>
             <input type="submit" name="submitBtn" value="' . $text[4] . '" />
         </form>
-        <iframe name="upload_target" id="upload_target" src="/gif.gif" ';
+        <iframe name="upload_target" id="upload_target" src="/images/gif.gif" ';
     if ($admin_ip == $_SERVER['REMOTE_ADDR'] || 1 == 2) {
         echo 'style="width:100%;height:600px;background: #FFFFFF;"';
     } else {

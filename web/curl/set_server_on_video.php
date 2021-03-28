@@ -17,6 +17,18 @@ if($_GET['server']!='' && $_GET['video']!='')
 
     set_elements('videos_index.dat',$_GET['video'],$keyvalue_toset_array);
     echo 'ok';
+
+    //if ready=1 set ready on all associated videos
+    if(isset($_GET['ready']) && $_GET['ready']==1){
+        $query='SELECT * FROM videos WHERE file_md5 = :filedm5';
+        $params=array(':filedm5'=>$_GET['video']);
+        $associated_uploads=$db->query($query,$params);
+        foreach($associated_uploads['request_result'] as $associated_upload){
+            $upload_data_array=array();
+            $upload_data_array['ready']=1;
+            $db->update('videos',$upload_data_array['id'],$upload_data_array);
+        }
+    }
 }
 
 $db->disconnect();

@@ -158,7 +158,24 @@ if ($upload_info['suspend'] == '0' && $upload_info['file_md5'] != '0') {
 }
 //==============get video info from dat system
 
+//=========determine video state:
+$state=false;
+if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
+    $state='deleted';
+} else if (substr($video_info['server'], 0, 6) == 'upload') {
+    $state='encoding';
+} else if (substr($video_info['server'], 0, 15) == 'failedencoding_') {
+    $state='failed_encoding';
+} else {
+    $state='ok';
 
+    //backup mechanism for videos ready state...
+    if($upload_info['ready'] == '0'){
+        $upload__update_data_array=array();
+        $upload__update_data_array['ready']=1;
+        $db->update('videos',$upload_info['id'],$upload__update_data_array);
+    }
+}
 
 include(BP.'/include/head_start.php');
 echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>
@@ -227,7 +244,7 @@ if (can_admin_video() && !isset($_GET['embed'])) {
 
 
 //++++++++++++++++++++++++++++++++++CONTENT
-if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
+if ($state=='deleted') {
 
 	//=======video is deleted=======
 
@@ -253,7 +270,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
     echo '</center>';
 
     //echo '<br />' . $edit_form . $delete_form;
-} else if (substr($video_info['server'], 0, 6) == 'upload') {
+} else if ($state=='encoding') {
 
 	//=========video is encoding=======
 
@@ -283,13 +300,19 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
     echo '</center>';
 
     //echo '<br />' . $edit_form;
-} else if (substr($video_info['server'], 0, 15) == 'failedencoding_') {
+} else if ($state=='failed_encoding') {
+
+    //=========video encoding failed=======
+
     echo '<center>';
     echo '<br /><br /><br />';
     echo $text[115];
     echo '</center>';
     echo '<br />';
-} else {
+} else if($state=='ok') {
+
+    //=========video ready=======
+
     ?>
 
     <!-- open content container -->
@@ -451,6 +474,8 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
     </div>
 
     <?php
+} else {
+    echo __('error, unknown video state');
 }
 
 if(!isset($_GET['embed'])) {

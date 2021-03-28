@@ -21,7 +21,7 @@ function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $mes
     try {
         $response = $sendgrid->send($email);
 
-
+        /*
         echo "<h4>status code</h4>";
         print $response->statusCode() . "\n";
         echo "<h4>headers</h4>";
@@ -29,6 +29,7 @@ function send_mail($to, $toname, $from, $fromname, $subject, $message_html, $mes
         echo "<h4>body</h4>";
         print $response->body() . "\n";
         echo "<hr>";
+        */
 
         if(substr($response->statusCode(),0,1)=='2'){
             $message_type='success';

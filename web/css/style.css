@@ -136,11 +136,20 @@ a.selected_lang {
 }
 .lang_separ {color: grey;}
 
+.logo_container {
+}
+.logo_container img {
+    max-width: 25%;
+}
 @media only screen and (max-width: 800px) {
 	ul#nav li {
 		font-size: 24px;
 	}
-	.header_container {padding:0;width:auto;}
+	.header_container {
+        padding:0;width:auto;
+        display:inline-block;
+        height: 140px;
+    }
 	ul#nav li {
         display: block;
         text-align: left;
@@ -153,6 +162,8 @@ a.selected_lang {
         display:block;
         padding: 10px;
         height: 21px;
+        display:inline-block;
+        vertical-align: top;
     }
     #nav {
         display: none;
@@ -168,6 +179,18 @@ a.selected_lang {
         width:400px !important;
         z-index:1001;
     }
+
+    .logo_container {
+        display:inline-block;
+        max-width: 50%;
+        position: absolute;
+        right: 0;
+        max-width: 240px;
+    }
+    .logo_container img {
+        max-width: 240px;
+    }
+
 }
 
 /*I am tired of putting those manually*/

@@ -46,11 +46,10 @@ if($language=='en'){
 	</ul>
 </div>
 
-<div>
-	<div>
-		<?php if($logofile){?><img src="<?php echo  $logofile ?>" alt="<?php echo  $site_name ?>" style="max-width:25%;height:auto;" /><?php } ?>
-	</div>
+<div class="logo_container">
+    <?php if($logofile){?><img class="logo" src="<?php echo  $logofile ?>" alt="<?php echo  $site_name ?>" /><?php } ?>
 </div>
+
 
 
 

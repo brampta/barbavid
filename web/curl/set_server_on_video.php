@@ -4,13 +4,13 @@ include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 if(array_search($_SERVER['REMOTE_ADDR'],$allowed_ips)===false)
 {die('unauthorized');}
 
-if($_GET['server']!='' && $_GET['video']!='')
+if(isset($_GET['server']) && $_GET['server']!='' && isset($_GET['video']) && $_GET['video']!='')
 {
     //include(BP.'/include/dat_system/dat_system_functions.php');
     $keyvalue_toset_array['server']=$_GET['server'];
-    if($_GET['chunks']!='')
+    if(isset($_GET['chunks']) && $_GET['chunks']!='')
     {$keyvalue_toset_array['chunks']=unserialize($_GET['chunks']);}
-    if($_GET['reso']!='')
+    if(isset($_GET['reso']) && $_GET['reso']!='')
     {$keyvalue_toset_array['reso']=$_GET['reso'];}
     if(isset($_GET['time']) && $_GET['time']!='')
     {$keyvalue_toset_array['time']=$_GET['time'];}
@@ -23,10 +23,11 @@ if($_GET['server']!='' && $_GET['video']!='')
         $query='SELECT * FROM videos WHERE file_md5 = :filedm5';
         $params=array(':filedm5'=>$_GET['video']);
         $associated_uploads=$db->query($query,$params);
+        //var_dump($associated_uploads);
         foreach($associated_uploads['request_result'] as $associated_upload){
             $upload_data_array=array();
             $upload_data_array['ready']=1;
-            $db->update('videos',$upload_data_array['id'],$upload_data_array);
+            $db->update('videos',$associated_upload['id'],$upload_data_array);
         }
     }
 }

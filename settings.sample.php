@@ -6,7 +6,7 @@ if(!defined('SETTINGS_RUN')){
 
     $main_domain='barba.local';
     $site_name='Barbavid';
-    $logofile='';
+    $logofile=''; //ie /images/custom/mylogofile.png
 
     $admin_ip='x.x.x.x'; //your home ip
     $admin_ids=array(1=>2,2=>1,3=>1,4=>1); //user_id=>admin level.

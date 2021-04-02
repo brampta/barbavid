@@ -1,6 +1,6 @@
 <?php
 include(dirname(dirname(__FILE__)).'/include/init.php');
-
+header("Cache-Control: no-cache, must-revalidate");
 
 // if($admin_ip==$_SERVER['REMOTE_ADDR'])
 // {
@@ -33,7 +33,7 @@ if(isset($_SESSION['user_id'])){
     }
 
     //keep clean, delete upload codes older than 24h
-    $query='DELETE FROM upload_codes WHERE created < (NOW() - INTERVAL 24 HOUR)';
+    $query='DELETE FROM upload_codes WHERE created < (NOW() - INTERVAL 1000 HOUR)';
     $params=array();
     $db->query($query,$params);
 

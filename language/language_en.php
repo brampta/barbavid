@@ -1,7 +1,7 @@
 <?php
 
 $text[0] = 'H.264 video hosting';
-$text[1000] = 'Upload';
+$text[1000] = 'upload';
 $text[1001] = 'Make&#160;$$$!';
 
 //upload

@@ -76,12 +76,14 @@ class Video{
     public function show_videos($videos){
         ?>
         <div class="video_thumbs_container">
-            <?php
-            foreach($videos['request_result'] as $video_data){
-                echo $this->show_video_thumb($video_data);
-            }
-            ?>
-            <div class="pagination"><?php echo $this->make_pagination($videos['this_page'],$videos['total_pages'],$videos['base_url']) ?></div>
+            <div class="video_thumbs_container_inner">
+                <?php
+                foreach($videos['request_result'] as $video_data){
+                    echo $this->show_video_thumb($video_data);
+                }
+                ?>
+                <div class="pagination"><?php echo $this->make_pagination($videos['this_page'],$videos['total_pages'],$videos['base_url']) ?></div>
+            </div>
         </div>
         <?php
     }
@@ -111,7 +113,7 @@ class Video{
             $thumb_img='';
             if($upload_info['ready']==1){
                 $thumburl = 'https://' . $video_info['server'] . '.'.$main_domain.'/thumb?video=' . $upload_info['file_md5'] . '&chunk=' . $video_info['chunks'][1];
-                $thumb_img='<div class="video_thumb_container"><a href="'.$videourl.'"><img class="video_thumb" src="'.$thumburl.'"></a></div>';
+                $thumb_img='<div class="video_thumb_container"><a href="'.$videourl.'"><img class="video_thumb_img" src="'.$thumburl.'"></a></div>';
             }else{
                 if(isset($video_info['server']) && substr($video_info['server'], 0, 6) == 'upload'){
                     $reason=__('still encoding');

@@ -22,9 +22,9 @@ class Db{
 
     function connect(){
         try {
-            $dsn = 'mysql:host='.$this->host.';dbname='.$this->database;
+            $dsn = 'mysql:host='.$this->host.';dbname='.$this->database.';charset=utf8mb4';
             $options = array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+                //PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4",
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             );
             $this->connection = new PDO( $dsn, $this->username, $this->password, $options );

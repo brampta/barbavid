@@ -141,57 +141,7 @@ a.selected_lang {
 .logo_container img {
     max-width: 25%;
 }
-@media only screen and (max-width: 800px) {
-	ul#nav li {
-		font-size: 24px;
-	}
-	.header_container {
-        padding:0;width:auto;
-        display:inline-block;
-        height: 140px;
-    }
-	ul#nav li {
-        display: block;
-        text-align: left;
-        margin: 10px;
 
-    }
-    .mobinav_toggle {
-        font-size: 24px;
-        cursor:pointer;
-        display:block;
-        padding: 10px;
-        height: 21px;
-        display:inline-block;
-        vertical-align: top;
-    }
-    #nav {
-        display: none;
-        position:absolute !important;
-        width: 100%;
-        background-color: #000000;
-    }
-    #nav.mobile_nav_show {
-        display: block;
-    }
-    ul#nav li:hover ul, ul#nav li.over ul{ display: none; }
-    ul#nav li ul {
-        width:400px !important;
-        z-index:1001;
-    }
-
-    .logo_container {
-        display:inline-block;
-        max-width: 50%;
-        position: absolute;
-        right: 0;
-        max-width: 240px;
-    }
-    .logo_container img {
-        max-width: 240px;
-    }
-
-}
 
 /*I am tired of putting those manually*/
 a[onclick] {cursor:pointer;}
@@ -234,12 +184,73 @@ input[type=submit] {
 .video_thumbs_container {
     text-align: center;
 }
+
+
+.video_thumbs_container_inner {
+    text-align: left;
+    display:inline-block;
+    width:1200px;
+}
+@media only screen and (max-width: 1199px) {
+    .video_thumbs_container_inner {
+        width: 1050px;
+    }
+}
+@media only screen and (max-width: 1049px) {
+    .video_thumbs_container_inner {
+        width: 900px;
+    }
+}
+@media only screen and (max-width: 899px) {
+    .video_thumbs_container_inner {
+        width: 750px;
+    }
+}
+@media only screen and (max-width: 749px) {
+    .video_thumbs_container_inner {
+        width: 600px;
+    }
+}
+@media only screen and (max-width: 599px) {
+    .video_thumbs_container_inner {
+        width: 450px;
+    }
+}
+@media only screen and (max-width: 449px) {
+    .video_thumbs_container_inner {
+        width: 300px;
+    }
+}
+
+
+
 .video_thumb {
     display:inline-block;
-    padding:4px;
+    vertical-align: top;
+    width:150px;
 }
+.video_thumb_container {
+    width:128px;
+    left: 10px;
+    position: relative;
+}
+video_thumb_img {
+    width:128px;
+}
+
 .video_suspend_container, .video_error_container {
     color:red;
+}
+
+.video_title_container {
+    height:60px;
+    width:128px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    left: 10px;
+    position: relative;
 }
 
 .video, .video_edit {
@@ -318,4 +329,60 @@ input[type=submit] {
 }
 .pagination {
     margin-top:24px;
+}
+
+
+@media only screen and (max-width: 800px) {
+	ul#nav li {
+		font-size: 24px;
+	}
+	.header_container {
+        padding:0;width:auto;
+        display:inline-block;
+        height: 140px;
+    }
+	ul#nav li {
+        display: block;
+        text-align: left;
+        margin: 10px;
+
+    }
+    .mobinav_toggle {
+        font-size: 24px;
+        cursor:pointer;
+        display:block;
+        padding: 10px;
+        height: 21px;
+        display:inline-block;
+        vertical-align: top;
+    }
+    #nav {
+        display: none;
+        position:absolute !important;
+        width: 100%;
+        background-color: #000000;
+    }
+    #nav.mobile_nav_show {
+        display: block;
+    }
+    ul#nav li:hover ul, ul#nav li.over ul{ display: none; }
+    ul#nav li ul {
+        width:400px !important;
+        z-index:1001;
+    }
+
+    .logo_container {
+        display:inline-block;
+        max-width: 50%;
+        position: absolute;
+        right: 0;
+        max-width: 240px;
+    }
+    .logo_container img {
+        max-width: 240px;
+    }
+
+    .video_thumb {
+        max-width: none;
+    }
 }

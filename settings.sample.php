@@ -26,9 +26,25 @@ $sendgrid_api_key='xxxxxxxxxxxxxxx';
 $email_from='no-reply@barba.local';
 $email_fromname='Barbavid system mail';
 
+$customization_folder=dirname(dirname(__FILE__)).'/barbavid_customization';
 
 
 
+$logofile=''; //ie /mylogofile.png
+
+//$upload_exire_after_x_days_of_inactiv=120;
+//$upload_exire_after_x_days_of_inactiv=365*2;
+//due to budget restrictions I have to lower that a lot for the site to be able to survive :(
+$upload_exire_after_x_days_of_inactiv=30;
+$remove_unseen_vids_after_x_days=4;
+$videokey_exire_after_x_hours=10;
+$dat_system_keep_last_x_baks = 9;
 
 
+$dat_system_home=dirname(dirname(__FILE__)).'/dat_system';
+define('DAT_SYSTEM_HOME',$dat_system_home);
+
+
+//max upload size in MB as shown on homepage
+$maxmb = 10000;
 

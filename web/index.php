@@ -1,11 +1,11 @@
 <?php
 include(dirname(dirname(__FILE__)).'/include/init.php');
-//include(BP.'/include/dat_system/dat_system_functions.php');
-//include(BP.'/include/function/video.php');
+
+include(BP.'/include/procedure/controller.php');
 
 include(BP.'/include/function/get_path_var.php');
-$page=get_path_var('page',(isset($_GET['path']))?$_GET['path']:'',1);
-$videos = $video->get_home_videos($page,5);
+$page=get_path_var('page',$_SERVER['REQUEST_URI'],1);
+$videos = $video->get_home_videos($page,50);
 
 include(BP.'/include/head_start.php');
 include(BP.'/include/head_end.php');

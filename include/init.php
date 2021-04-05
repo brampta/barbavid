@@ -4,10 +4,6 @@ if(!defined('INIT_RUN')) {
 
     define('BP', dirname(dirname(__FILE__))); //base path
 
-    $custom_settings_file=BP . '/custom/settings.php';
-    if(file_exists($custom_settings_file)){
-        include $custom_settings_file;
-    }
     include(BP . '/settings.php');
 
     $mobile_stuff_for_head='<meta name="HandheldFriendly" content="True">

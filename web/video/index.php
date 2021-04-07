@@ -191,6 +191,14 @@ echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . 
 //	$re_embeder='&embed=1';
 //}
 
+//open graph protocol:
+echo '<meta property="og:title" content="'.htmlspecialchars(($upload_info['title'])).'" />';
+if($upload_info['ready']==1) {
+    $thumburl = 'https://' . $video_info['server'] . '.'.$main_domain.'/large?video=' . $upload_info['file_md5'] . '&chunk=' . $video_info['chunks'][$chunknumber];
+    echo '<meta property="og:type" content="video.movie" />
+    <meta property="og:image" content="'.$thumburl.'" />';
+}
+
 include(BP.'/include/head_end.php');
 	
 $re_embeder='';

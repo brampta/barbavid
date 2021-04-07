@@ -38,13 +38,13 @@ add AddType application/x-httpd-php .php to the /etc/apache2/mods-enabled/mime.c
 # Cronjobs:
 
 ## mains site cronjobs:
-01 06 */6 * * /usr/bin/nice -n 19 php /var/www/barbavid/expire.php
-13 */1 * * * /usr/bin/nice -n 19 php /var/www/barbavid/expire_key.php
-30 5 * * * /usr/bin/nice -n 19 php /var/www/barbavid/bakup_dat_system.php
-30 6 * * * /usr/bin/nice -n 19 php /var/www/barbavid/keep_only_x_baks.php
+01 06 */6 * * /usr/bin/nice -n 19 php [path to barbasite]/web/cron/expire.php
+13 */1 * * * /usr/bin/nice -n 19 php [path to barbasite]/web/cron/expire_key.php
+30 5 * * * /usr/bin/nice -n 19 php [path to barbasite]/web/dat_system/bakup_dat_system.php
+30 6 * * * /usr/bin/nice -n 19 php [path to barbasite]/web/dat_system/keep_only_x_baks.php
 
 ## upload server cronjobs:
-*/3 * * * * /usr/bin/nice -n 19 php /var/www/barbavid/uploadserver1/encode.php
+* * * * * /usr/bin/nice -n 19 php [path to upload server]/web/cron/encode.php
 
 # Customization
 

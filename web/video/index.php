@@ -298,6 +298,12 @@ if ($state=='deleted') {
     if ($queue_info != '' && $queue_info !== 'not found') {
         $exploded_info = explode(' ', $queue_info);
         if ($exploded_info[0] === 'inprogress') {
+            if(!isset($exploded_info[2])){
+                $exploded_info[2]=null;
+            }
+            if(!isset($exploded_info[3])){
+                $exploded_info[3]=null;
+            }
             echo explain_encode_progress($exploded_info[1], $exploded_info[2], $exploded_info[3]);
         } else if ($queue_info === 'not found-error queue') {
             echo $text[115];

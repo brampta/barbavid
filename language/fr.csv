@@ -76,3 +76,5 @@
 "still encoding","en cours d'encodage"
 "encoding failed","l'encodage a échoué"
 "unknown error","erreur inconnue"
+"Url","Url"
+"ie: https://url.to/video/file.mp4","ex: https://url.du/fichier/video.mp4"

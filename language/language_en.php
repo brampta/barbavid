@@ -13,9 +13,7 @@ $text[5] = 'Suspend';
 $text[6] = 'Save changes';
 $text[7] = 'Delete associated video';
 $text[8] = 'I\'m sure';
-$text[9] = 'Maximum '.$maxmb.' Megabytes<br />
-Multiple audio tracks: only the first audio track will be used<br />
-Subtitles tracks: will be ignored, please <a href="http://avidemux.sourceforge.net/" target="_blank">hardcode subtitles</a>.';
+$text[9] = 'Maximum '.$maxmb.' Megabytes';
 $text[10] = 'Maximum 100 characters';
 $text[11] = 'Maximum 3000 characters';
 $text[12] = 'Upload in progress. Do not close this page.';

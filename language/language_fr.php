@@ -16,9 +16,7 @@ $text[5] = 'Suspension';
 $text[6] = 'Enregistrer';
 $text[7] = 'Éffacer le vidéo associé à cette mise en ligne';
 $text[8] = 'Je suis certain';
-$text[9] = 'Maximum '.$maxmb.' Méga-octets<br />
-Multiples pistes audio: seulement la première piste audio sera utilisée.<br />
-Pistes de sous-titres: seront ignorées, prière de les <a href="http://avidemux.sourceforge.net/" target="_blank">"hardcoder" dans le vidéo</a>.';
+$text[9] = 'Maximum '.$maxmb.' Méga-octets';
 $text[10] = 'Maximum 100 caractères';
 $text[11] = 'Maximum 3000 caractères';
 $text[12] = 'Mise en ligne en cours. Ne fermez pas cette page.';

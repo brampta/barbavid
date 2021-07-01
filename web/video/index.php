@@ -176,6 +176,7 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
         $db->update('videos',$upload_info['id'],$upload__update_data_array);
     }
 }
+//var_dump($state);
 
 include(BP.'/include/head_start.php');
 echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>

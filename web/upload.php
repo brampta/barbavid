@@ -71,29 +71,41 @@ if(!isset($_SESSION['user_id'])){
         <div id="upload_progress"><!-- --></div>
         </div>
         <div id="result"><!-- --></div>
-        <form action="https://' . $upload_server . '.' . $main_domain . '/upload" method="post" enctype="multipart/form-data"  ';
+        <form ';
+echo 'action="https://' . $upload_server . '.' . $main_domain . '/upload.php" method="post" enctype="multipart/form-data"  ';
 echo 'target="upload_target" onsubmit="startUpload();"';
-    echo '>
-            <h4>' . $text[14] . '</h4>
-            <input type="hidden" name="UPLOAD_IDENTIFIER" id="UPLOAD_IDENTIFIER" value="' . $UPLOAD_IDENTIFIER . '" />
-            <input type="hidden" name="upload_code" id="upload_code" value="' . $upload_code . '" />
-            <table class="vidform">
-            <tr><td class="labezl">' . $text[1] . ':</td><td><input name="file" type="file" class="uploadthing" /></td></tr>
-            <tr><td><!-- --></td><td class="xplain">' . $text[9] . '</td></tr>
-            <tr><td class="labezl">' . $text[2] . ':</td><td><input name="title" type="text" class="tittx" /></td></tr>
-            <tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>
-            <tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx"></textarea></td></tr>
-            <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+echo '>';
+echo '<h4>' . $text[14] . '</h4>';
 
-    echo '<tr><td class="labezl">' . __('Channel') . ':</td><td>'.$channel_select.'</td></tr>
-            <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+echo '<input type="hidden" name="UPLOAD_IDENTIFIER" id="UPLOAD_IDENTIFIER" value="' . $UPLOAD_IDENTIFIER . '" />';
+echo '<input type="hidden" name="upload_code" id="upload_code" value="' . $upload_code . '" />';
+
+echo '<table class="vidform">';
+            
+            
+echo '<tr class="file_boxes"><td class="labezl"><input type="radio" name="file_or_url" id="file_or_url_file" value="file" onclick="select_upload_mode(\'file\')">' . $text[1] . ':</td><td><input name="file" id="file" type="file" class="uploadthing" /></td></tr>';
+echo '<tr class="file_boxes"><td><!-- --></td><td class="xplain">' . $text[9] . '</td></tr>';
+            
+echo '<tr class="url_boxes"><td class="labezl"><input type="radio" name="file_or_url" id="file_or_url_url" value="url" onclick="select_upload_mode(\'url\')">' . __('Url') . ':</td><td><input name="url" id="url" type="text" class="uploadthing" /></td></tr>';
+echo '<tr class="url_boxes"><td><!-- --></td><td class="xplain">' . __('ie: https://url.to/video/file.mp4') . '</td></tr>';
+            
+echo '<script>select_upload_mode(\'detect\')</script>';
+            
+echo '<tr><td class="labezl">' . $text[2] . ':</td><td><input name="title" id="title" type="text" class="tittx" /></td></tr>';
+echo '<tr><td><!-- --></td><td class="xplain">' . $text[10] . '</td></tr>';
+echo '<tr><td class="labezl">' . $text[3] . ':</td><td><textarea name="description" class="descrtx"></textarea></td></tr>';
+echo '<tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
+
+echo '<tr><td class="labezl">' . __('Channel') . ':</td><td>'.$channel_select.'</td></tr>';
+echo '<tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
 
     //echo '<tr><td class="labezl">' . $text[15] . ' <div style="position:relative;display:inline;"><span onmouseover="document.getElementById(\'popup_explain\').style.display=\'block\';" onmouseout="document.getElementById(\'popup_explain\').style.display=\'none\';" style="cursor:pointer;" class="poppy_button">?</span><div id="popup_explain" onmouseout="document.getElementById(\'popup_explain\').style.display=\'none\';" style="display:none;position:absolute;" class="poppy_info">' . $text[17] . '</div></div>:</td><td><input name="popup_URL" type="text" class="popupx" onchange="remember_popup_URL(&quot;popup_URL_input&quot;)" id="popup_URL_input" /><script>populate_popup_URL("popup_URL_input");</script></td></tr>
     //        <tr><td><!-- --></td><td class="xplain">' . $text[16] . '</td></tr>';
-    echo '</table>
-            <input type="submit" name="submitBtn" value="' . $text[4] . '" />
-        </form>
-        <iframe name="upload_target" id="upload_target" src="/images/gif.gif" ';
+echo '</table>';
+
+echo '<input type="submit" name="submitBtn" value="' . $text[4] . '" />';
+echo '</form>';
+echo '<iframe name="upload_target" id="upload_target" src="/images/gif.gif" ';
     if ($admin_ip == $_SERVER['REMOTE_ADDR'] || 1 == 2) {
         echo 'style="width:100%;height:600px;background: #FFFFFF;"';
     } else {

@@ -48,3 +48,8 @@ define('DAT_SYSTEM_HOME',$dat_system_home);
 //max upload size in MB as shown on homepage
 $maxmb = 10000;
 
+//image sizes
+$image_sizes=array(
+    'thumb'=>array(390,220),
+    'large'=>array(960,540),
+);

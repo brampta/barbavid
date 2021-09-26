@@ -61,6 +61,16 @@ CREATE TABLE `validation_codes` (
  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
+CREATE TABLE `channels` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `hash` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `name` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+ `suspend` tinyint(4) NOT NULL DEFAULT 0,
+ `created` datetime NOT NULL,
+ `updated` datetime NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
 CREATE TABLE `videos` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -68,8 +78,8 @@ CREATE TABLE `videos` (
  `file_md5` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
  `title` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
- `suspend` tinyint(4) NOT NULL,
- `ready` tinyint(4) NOT NULL,
+ `suspend` tinyint(4)NOT NULL DEFAULT 0,
+ `ready` tinyint(4) NOT NULL DEFAULT 0,
  `user_id` int(11) NOT NULL,
  `channel_id` int(11) NOT NULL,
  `created` datetime NOT NULL,
@@ -84,16 +94,6 @@ CREATE TABLE `videos` (
  CONSTRAINT `video_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
-CREATE TABLE `channels` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `hash` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
- `name` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
- `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
- `suspend` tinyint(4) NOT NULL,
- `created` datetime NOT NULL,
- `updated` datetime NOT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 
 CREATE TABLE `channel_admins` (
  `id` int(11) NOT NULL AUTO_INCREMENT,

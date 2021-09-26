@@ -32,6 +32,8 @@ if(
     $notfoundfile=$customization_folder.'/404.php';
     if(file_exists($notfoundfile)){
         include $notfoundfile;
+    }else{
+        echo 'page not found';
     }
     die();
 }

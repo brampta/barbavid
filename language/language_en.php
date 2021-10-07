@@ -102,7 +102,7 @@ $text[126]='click here for the mobile version';
 $text[150]='download';
 $text[151]='embed';
 $text[152]='duplicate';
-$text[153]='use this code to embed this video to your page';
+$text[153]='use this code to embed this video';
 $text[154]='playing';
 
 

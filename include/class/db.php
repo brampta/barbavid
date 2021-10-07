@@ -158,6 +158,7 @@ class Db{
                     $request_result[]=$row;
                 }
                 $result['stmt']=$stmt;
+                $result['params']=$params;
                 $result['request_result']=$request_result;
                 return $result;
             }else{

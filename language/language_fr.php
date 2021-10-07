@@ -106,7 +106,7 @@ $text[126]='cliquez ici pour la version mobile';
 $text[150]='télécharger';
 $text[151]='intégrer';
 $text[152]='dupliquer';
-$text[153]='utilisez ce code pour intégrer ce video à votre page';
+$text[153]='utilisez ce code pour intégrer ce video à une page';
 $text[154]='selectionné';
 
 

@@ -178,12 +178,30 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
 }
 //var_dump($state);
 
+
+//next video!
+//if not last chunk next video will be next chunk
+//if channel next video will be next in channel
+$nextvideo_url = null;
+if($chunknumber<$howmany_chunks){
+    $nextvideo_url =  '/video/' . $upload_hash . '/' . ($chunknumber+1).'?autoplay=0'.$re_embeder;
+}else if(isset($_GET['channel'])){
+    //find video that comes after this video in channel list!
+    $videos = $video->get_channel_videos($channel_data_array,1,1,false,'after:'.$upload_hash);
+    //echo '<pre>'.print_r($videos,true).'</pre>';
+    $nextvideo_url = $video->channel_embed_redirect_url($videos,false);
+}
+
 include(BP.'/include/head_start.php');
 echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>
 <script type="text/javascript" src="/js/video_js2.js"></script>
 <script type="text/javascript" src="/js/language_video_js.php?lang=' . urlencode($language) . '"></script>
 <script type="text/javascript" src="/js/maketimus.js"></script>
-<script type="text/javascript" src="/js/language_maketimus_js.php?lang='.urlencode($language).'"></script>';
+<script type="text/javascript" src="/js/language_maketimus_js.php?lang='.urlencode($language).'"></script>
+<script>
+    var nextvideo_url = '.json_encode($nextvideo_url) .';
+    var autoplay = '.json_encode(isset($_GET['autoplay'])?true:false).';
+</script>';
 
 //this seems like a weird place for this bit of code, moving it lower... with its brother..
 //$re_embeder='';
@@ -207,6 +225,7 @@ if(isset($_GET['embed']))
 {
 	$re_embeder='&embed=1';
 }
+
 if(!isset($_GET['embed']))
 {include(BP.'/include/header.php');}
 
@@ -376,12 +395,19 @@ if ($state=='deleted') {
         //show HTML5 player
 
         //..........fluid player box..........
+        $autoplay='';
+        /*if(isset($_GET['autoplay'])){
+            $autoplay=' autoplay muted';
+        }*/ //meh lets use JS instead
         echo '<div style="max-width:960px;max-height:540px;margin:auto;">
         <div style="position:relative;width:100%;padding-bottom:56.25%;">
         <div style="position:absolute;top:0;bottom:0;left:0;right:0;">';
-            echo '<video controls="controls" poster="' . $thumburl . '" id="HTML5Barbavideo" style="width:100%;height:100%;">
+            echo '<video controls="controls" poster="' . $thumburl . '" id="HTML5Barbavideo" style="width:100%;height:100%;"'.$autoplay.'>
                 <source src="' . $divx_file_url . '" type="video/mp4" />
-            </video>';
+            </video>
+            <script>
+                attach_video_events();
+            </script>';
         //..........close fluid player box..........
         echo '</div></div></div>';
 
@@ -413,6 +439,9 @@ if ($state=='deleted') {
             //echo '</tr></table>';
             echo '</div>';
         }
+        
+        //if channel, include channel navigation!
+        
         ?>
 
 

@@ -14,19 +14,20 @@ $channel_data_array=$channel->load_by_hash($channel_hash);
 //channel embed
 if(isset($_GET['embed'])){
     if(isset($_GET['video'])){
-        $channel_embed_video = 'hash:'.$_GET['video'];
+        $video_hash = $_GET['video'];
     }else{
-        $channel_embed_video = 'last';
+        $videos = $video->get_channel_videos($channel_data_array,1,1,false);
+        $video_data = $videos['request_result'][0];
+        $video_hash = $video_data['hash'];
     }
-    $videos = $video->get_channel_videos($channel_data_array,1,1,false,$channel_embed_video);
-    //echo '<pre>'.print_r($videos,true).'</pre>';die();
+    
     if(isset($_GET['autoplay'])){
         $autoplay = true;
     }else{
         $autoplay = false;
     }
-    $redirect_url = $video->channel_embed_redirect_url($videos,$autoplay);
-    header('Location: '.$redirect_url);
+    $channel_embed_redirect_url = $video->get_channel_embed_redirect_url($video_hash,$channel_hash,$autoplay);
+    header('Location: '.$channel_embed_redirect_url);
     exit;
 }
 

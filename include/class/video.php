@@ -20,18 +20,118 @@ class Video{
         return $this->get_videos($page,$perpage,$options);
     }
 
-    public function get_channel_videos($channel_data_array,$page=1,$perpage=50,$include_suspended=false,$channel_embed_video=null){
+    public function channel_get_around_videos($video_id,$channel_data_array,$quantity){
+        //loop requests to get_channel_videos() until finding the required video
+        //return page were video was found plus pages before and after, combined in 1 page
+        $page = 1;
+        $perpage = ceil($quantity/3);
+        $count_turns = 0;
+        $max_turns = 1000;
+        $matching_page_was_first_page = false;
+        
+        $prev_page = null;
+        $page_with_vid = null;
+        $page_after = null;
+        
+        $videos = null;
+        while(
+                (
+                    !$prev_page
+                    || !$page_with_vid
+                    || !$page_after
+                )
+                && $count_turns<$max_turns
+                ){//as long as you dont have your 3 pages
+            $count_turns++;
+            //echo '==============page '.$page.'<br>';
+            
+            if($videos && !$page_with_vid){
+                $prev_page = $videos;
+            }
+            $videos = $this->get_channel_videos($channel_data_array,$page,$perpage,false);
+            //echo '<pre>'.print_r($videos,true).'</pre>';
+            if($page_with_vid){
+                $page_after = $videos;
+            }else{
+                foreach($videos['request_result'] as $video_data){
+                    if($video_data['id']==$video_id || $matching_page_was_first_page){
+                        //echo '==============page has the vid! (or is page after if page with vid was first page)<br>';
+                        if($page == 1){
+                            //echo '==============page with vid was first page! need to delay pages<br>';
+                            $matching_page_was_first_page = true;
+                        }else{
+                            $page_with_vid = $videos;
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if(count($videos['request_result'])<$perpage){
+                break;
+            }
+            $page++;
+        }
+        
+        $combined_videos = array();
+        
+        // in case there were not enough results
+        if(!$page_with_vid){
+            $page_with_vid = array('request_result' => array());
+        }
+        if(!$page_after){
+            $page_after = array('request_result' => array());
+        }
+        
+        $combined_videos['request_result'] = array_merge(
+            $prev_page['request_result'],
+            $page_with_vid['request_result'],
+            $page_after['request_result']
+        );
+        
+        //also find page after and page before... for next and prev buttons
+        $vid_before = null;
+        $vid_after = null;
+        $found_vid = false;
+        foreach($combined_videos['request_result'] as $video_data){
+            //echo $video_data['hash'].'<br>';
+            
+            if($found_vid){
+                $vid_after = $video_data;
+                break;
+            }
+            if($video_data['id']==$video_id){
+                $found_vid = true;
+                //echo 'is vid<br>';
+            }
+            if(!$found_vid){
+                $vid_before = $video_data;
+            }
+        }
+        if($found_vid){
+            if($vid_before){
+                //echo 'vid before '.$vid_before['hash'].'<br>';
+                $combined_videos['vid_before'] = $vid_before;
+            }
+            if($vid_after){
+                //echo 'vid after '.$vid_after['hash'].'<br>';
+                $combined_videos['vid_after'] = $vid_after;
+            }
+        }
+        
+        return $combined_videos;
+    }
+    
+    public function get_channel_videos($channel_data_array,$page=1,$perpage=50,$include_suspended=false){
         $options=array(
             'channel'=>$channel_data_array['id'],//well ok, later I needed the whole array, maybe remove those later and just use the array
             'channel_hash'=>$channel_data_array['hash'],//just use the array..
             'channel_data_array'=>$channel_data_array,
             'base_url'=>'/channel/'.$channel_data_array['hash'],
             'include_suspended'=>$include_suspended,
-            'channel_embed_video'=>$channel_embed_video,
         );
         return $this->get_videos($page,$perpage,$options);
     }
-
 
     public function get_videos($page,$perpage,$options){
         global $db;
@@ -49,61 +149,6 @@ class Video{
             //coming soon... will need to first join channel asso table then add channel_id clause and param
             $channel_id_clause=' && channel_id = :channel_id ';
             $params[':channel_id']=$options['channel'];
-            if(isset($options['channel_embed_video'])){
-                
-                //get next video in channel!
-                $exploded_channel_embed_video = explode(':',$options['channel_embed_video']);
-                if($exploded_channel_embed_video[0]=='after'){
-                    //var_dump('is after embed video '.$exploded_channel_embed_video[1]);
-                    //search for video after
-                    $looking_for_hash = $exploded_channel_embed_video[1];
-                    $per_page = 2; //low for testing,increase a lot later..
-                    $maxturns = 1000;
-                    $countturns = 0;
-                    $found_video = false;
-                    $next_video = null;
-                    while($countturns < $maxturns){
-                        $countturns++;
-                        
-                        $videos = $this->get_channel_videos($options['channel_data_array'],$countturns,$per_page,false);
-                        //echo '<pre>'.print_r($videos,true).'</pre>';
-                        $count_turn_results = 0;
-                        foreach($videos['request_result'] as $video_data){
-                            //echo $video_data['hash'].'<br>';
-                            $count_turn_results++;
-                            if($found_video){
-                                $next_video = $video_data['hash'];
-                                //echo 'next video<br>';
-                                break 2;
-                            }
-                            
-                            if($video_data['hash']==$looking_for_hash){
-                                $found_video = true;
-                                //echo 'matching video<br>';
-                            }
-                        }
-                        if($count_turn_results == 0){
-                            break;
-                        }
-                    }
-                    if($next_video){
-                        $options['channel_embed_video'] = 'hash:'.$next_video;
-                    }else{
-                        $options['channel_embed_video'] = 'last';
-                    }
-                    
-                }
-                
-                //get either latest or specific video from channel
-                //echo $options['channel_embed_video'].'<br>';
-                $exploded_channel_embed_video = explode(':',$options['channel_embed_video']);
-                if($exploded_channel_embed_video[0] == 'hash'){
-                    $channel_embed_video_clause=' && hash = :hash ';
-                    $params[':hash']=$exploded_channel_embed_video[1] ;
-                }else /*if($exploded_channel_embed_video[0] == 'last')*/{ //no if, so show latest is default
-                    $order = 'ORDER BY created DESC'; //just make sure last one's on top
-                }
-            }
         }
 
         $suspended_clause=' && ready = 1 && suspend = 0 ';
@@ -120,12 +165,10 @@ class Video{
 
         $start_at=($page-1)*$perpage;
         $query='SELECT * FROM videos '.$where.' '.$order.' LIMIT '.$start_at.','.$perpage;
-        //var_dump($query);
         $videos = $db->query($query,$params);
 
         $videos['this_page']=$page;
         $query='SELECT COUNT(*) as totalvideos FROM videos '.$where;
-        //var_dump($query);
         $count_videos=$db->query($query,$params);
         $count_videos=$count_videos['request_result'][0]['totalvideos'];
         $videos['total_videos']=$count_videos;
@@ -133,8 +176,6 @@ class Video{
 
         //$videos['base_url']=$options['base_url'];
         $videos['options']=$options;
-
-        //var_dump($videos);
 
         return $videos;
     }
@@ -224,15 +265,11 @@ class Video{
         return $pagination_string;
     }
     
-    public function channel_embed_redirect_url($videos,$autoplay){
-        $video_data = $videos['request_result'][0];
-        $video_hash = $video_data['hash'];
-        $channel_hash = $videos['options']['channel_hash'];
+    public function get_channel_embed_redirect_url($video_hash,$channel_hash,$autoplay){
         $autoplay_query = '';
         if($autoplay){
             $autoplay_query = '&autoplay=1';
         }
         return '/video/'.$video_hash.'?embed=1&channel='.$channel_hash.$autoplay_query;
-       
     }
 }

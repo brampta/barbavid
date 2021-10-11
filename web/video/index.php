@@ -8,44 +8,8 @@ $maxdesclen = 3000;
 $maxpopURLlen = 1024;
 
 
-//include(BP.'/include/dat_system/dat_system_functions.php');
 include(BP.'/include/function/make_link.php');
 include(BP.'/include/function/datetime_to_timestamp.php');
-
-
-//$player = 'https://'.$main_domain.'/player.swf';
-
-
-
-//===============this will be removed in new version
-//if (isset($_GET['mobile'])) {
-//    setcookie("mobile", "yes", time() + 3600);
-//    $_COOKIE['mobile'] = 'yes';
-//} else if (isset($_GET['notmobile'])) {
-//    setcookie("mobile", "no", time() + 3600);
-//    $_COOKIE['mobile'] = 'no';
-//}
-//if (isset($_COOKIE['mobile']) && $_COOKIE['mobile'] == 'yes') {
-//    $_GET['mobile'] = 1;
-//}
-//if (!isset($_COOKIE['mobile'])) {
-//    $device = 'desktop';
-//    if (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad')) {
-//        $device = "ipad";
-//    } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
-//        $device = "iphone";
-//    } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'blackberry')) {
-//        $device = "blackberry";
-//    } else if (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
-//        $device = "android";
-//    }
-//    if ($device != 'desktop') {
-//        $_GET['mobile'] = 1;
-//    }
-//}
-//===============this will be removed in new version
-
-
 
 //==========get upload info
 $exploded_upload = explode('/', $_GET['upload']);
@@ -70,14 +34,6 @@ $user_data_array = $db->load('users',$upload_info['user_id']);
 include(BP.'/include/function/can_admin.php');
 function can_admin_video(){
     global $upload_info;
-    /*if(isset($_SESSION['mod_level']) && $_SESSION['mod_level']>=1){
-        return true;
-    }
-    if(isset($_SESSION['user_id']) && $_SESSION['user_id']==$upload_info['user_id']){
-        return true;
-    }
-
-    return false;*/
     return can_admin($upload_info['user_id'],1);
 }
 
@@ -153,8 +109,6 @@ if ($upload_info['suspend'] == '0' && $upload_info['file_md5'] != '0') {
     if ($howmany_chunks == 1) {
         $chunknumber = 1;
     }
-
-    //echo '$chunknumber: '.$chunknumber.'<br />';
 }
 //==============get video info from dat system
 
@@ -176,20 +130,22 @@ if ($upload_info['suspend'] != '0' || $upload_info['file_md5'] == '0') {
         $db->update('videos',$upload_info['id'],$upload__update_data_array);
     }
 }
-//var_dump($state);
-
 
 //next video!
 //if not last chunk next video will be next chunk
 //if channel next video will be next in channel
+$previousvideo_url = null;
 $nextvideo_url = null;
 if($chunknumber<$howmany_chunks){
     $nextvideo_url =  '/video/' . $upload_hash . '/' . ($chunknumber+1).'?autoplay=0'.$re_embeder;
 }else if(isset($_GET['channel'])){
-    //find video that comes after this video in channel list!
-    $videos = $video->get_channel_videos($channel_data_array,1,1,false,'after:'.$upload_hash);
-    //echo '<pre>'.print_r($videos,true).'</pre>';
-    $nextvideo_url = $video->channel_embed_redirect_url($videos,false);
+    $around_videos = $video->channel_get_around_videos($upload_info['id'],$channel_data_array,7);
+    if(isset($around_videos['vid_before'])){
+        $previousvideo_url = $video->get_channel_embed_redirect_url($around_videos['vid_before']['hash'],$channel_data_array['hash'],false);
+    }
+    if(isset($around_videos['vid_after'])){
+        $nextvideo_url = $video->get_channel_embed_redirect_url($around_videos['vid_after']['hash'],$channel_data_array['hash'],false);
+    }
 }
 
 include(BP.'/include/head_start.php');
@@ -199,16 +155,10 @@ echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . 
 <script type="text/javascript" src="/js/maketimus.js"></script>
 <script type="text/javascript" src="/js/language_maketimus_js.php?lang='.urlencode($language).'"></script>
 <script>
+    var previousvideo_url = '.json_encode($previousvideo_url) .';
     var nextvideo_url = '.json_encode($nextvideo_url) .';
     var autoplay = '.json_encode(isset($_GET['autoplay'])?true:false).';
 </script>';
-
-//this seems like a weird place for this bit of code, moving it lower... with its brother..
-//$re_embeder='';
-//if(isset($_GET['embed']))
-//{
-//	$re_embeder='&embed=1';
-//}
 
 //open graph protocol:
 echo '<meta property="og:title" content="'.htmlspecialchars(($upload_info['title'])).'" />';
@@ -246,7 +196,6 @@ $edit_form.='<tr><td class="labezl">' . __('Channel') . ':</td><td>'.$channel_se
         <tr><td><!-- --></td><td class="xplain">' . $text[11] . '</td></tr>';
 
 $edit_form.= '<tr><td class="labezl">' . $text[5] . ':</td><td>';
-//$edit_form.='<textarea name="suspend" class="descrtx">' . htmlspecialchars(($upload_info['suspend'])) . '</textarea>';
 $edit_form.='<div><input type="radio" name="suspend" value="0"';if($upload_info['suspend']==0){$edit_form.=' checked="checked"';}$edit_form.='>ok</div>';
 $edit_form.='<div><input type="radio" name="suspend" value="1"';if($upload_info['suspend']==1){$edit_form.=' checked="checked"';}$edit_form.='>suspended</div>';
 $edit_form.='</td></tr>
@@ -283,10 +232,6 @@ if ($state=='deleted') {
     echo '<div class="error">';
     if ($upload_info['suspend'] != '') {
         echo '<div class="suspended">' . $text[102] . '</div>';
-        //echo '<table><tr><td>';
-        //echo '<div class="reason">' . $text[103] . '</div>';
-        //echo '<div class="show_reason">' . ($upload_info['suspend']) . '</div>';
-        //echo '</td></tr></table>';
     }
     if ($upload_info['file_md5'] == '0') {
         echo '<div class="deleted">' . $text[104] . '</div>';
@@ -297,11 +242,9 @@ if ($state=='deleted') {
 	
     echo '</center>';
 
-    //echo '<br />' . $edit_form . $delete_form;
 } else if ($state=='encoding') {
 
-	//=========video is encoding=======
-
+    //=========video is encoding=======
     echo '<center>';
     echo '<br /><br />' . $text[101] . '<br />';
     include(BP.'/include/function/curl.php');
@@ -314,7 +257,6 @@ if ($state=='deleted') {
         $queue_info = get_content_of_url($queue_url);
     }
 	
-	//echo $queue_url.':<br />'.$queue_info.'<br>';
     if ($queue_info != '' && $queue_info !== 'not found') {
         $exploded_info = explode(' ', $queue_info);
         if ($exploded_info[0] === 'inprogress') {
@@ -333,11 +275,9 @@ if ($state=='deleted') {
     }
     echo '</center>';
 
-    //echo '<br />' . $edit_form;
 } else if ($state=='failed_encoding') {
 
     //=========video encoding failed=======
-
     echo '<center>';
     echo '<br /><br /><br />';
     echo $text[115];
@@ -346,7 +286,6 @@ if ($state=='deleted') {
 } else if($state=='ok') {
 
     //=========video ready=======
-
     ?>
 
     <!-- open content container -->
@@ -440,7 +379,7 @@ if ($state=='deleted') {
             echo '</div>';
         }
         
-        //if channel, include channel navigation!
+        
         
         ?>
 
@@ -518,6 +457,24 @@ if ($state=='deleted') {
     </div>
 
     <?php
+    
+    //if channel, include channel navigation!
+        //$previousvideo_url, $nextvideo_url
+        
+        if(isset($_GET['channel'])){
+            echo '<div class="channel_next">';
+            if($previousvideo_url){
+                echo '<a href="'.$previousvideo_url.'">'.__('previous').'</a>';
+            }
+            if($nextvideo_url){
+                if($previousvideo_url){
+                   echo ' | ';
+                }
+                echo '<a href="'.$nextvideo_url.'">'.__('next').'</a>';
+            }
+            echo '</div>';
+        }
+        
 } else {
     echo __('error, unknown video state');
 }

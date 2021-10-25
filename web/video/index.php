@@ -360,11 +360,11 @@ if ($state=='deleted') {
             echo '<div style="margin:auto;">';
             foreach ($video_info['chunks'] as $key => $value) {
 
-                $divx_file_url = '/video/' . $upload_hash . '/' . $key.$re_embeder;
+                $chunk_url = '/video/' . $upload_hash . '/' . $key.$re_embeder;
                 $thumburl = 'https://' . $video_info['server'] . '.'.$main_domain.'/thumb?video=' . $upload_info['file_md5'] . '&chunk=' . $video_info['chunks'][$key];
                     //echo '<td style="vertical-align:top;text-align:center;">';
                     echo '<div style="position:relative;display:inline-block;">';
-                    echo '<a href="' . $divx_file_url . '">';
+                    echo '<a href="' . $chunk_url . '">';
                         echo '<img src="' . $thumburl . '" class="chunk_img" />';
                     echo '</a><br />';
                     echo '<a class="chunk_time chunk_link">' . chunkname2time($value) . '</a>';
@@ -408,7 +408,7 @@ if ($state=='deleted') {
                 <?php
                 //show options links
                 echo '<div style="position:relative;">
-                    <a href="' . $divx_file_url . '" target="_blank">' . $text[150] . '</a>
+                    <a href="' . $divx_file_url . '" download="' . htmlspecialchars(($upload_info['title'])) .'">' . $text[150] . '</a>
                     |
                     <a onclick="toggle_embed()" style="cursor:pointer;text-decoration:underline;">' . $text[151] . '</a>
                     <div id="embed_code_div" style="display:none;position:absolute;left:0;right:0;margin-left:auto;margin-right:auto;" class="poppy_info">

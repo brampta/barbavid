@@ -127,7 +127,7 @@ class User{
             //verify if email is validated
             if($user_data_array['validated']==0){
                 $return_data['errors'][]='email_not_validated';
-                $message->add_message('error','<a href="/user/resend_validaton">'.__('click here to resend the validation email').'</a>');
+                $message->add_message('error','<a href="/user/resend_validation">'.__('click here to resend the validation email').'</a>');
             }else{
                 //well thats it user is valid
                 $return_data['success']=true;

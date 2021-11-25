@@ -224,7 +224,7 @@ class Video{
         $video_info = get_element_info($upload_info['file_md5'], $datfile_num);
 
         $videourl = 'https://' . $main_domain.'/video/' . $upload_info['hash'];
-        $channelurl = 'https://' . $main_domain.'/channel/' . $upload_info['channel_name'];
+        $channelurl = 'https://' . $main_domain.'/channel/' . $upload_info['channel_hash'];
 
         $suspended='';
         if($upload_info['suspend']!=0){

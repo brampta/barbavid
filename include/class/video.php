@@ -176,7 +176,28 @@ class Video{
 
         //$videos['base_url']=$options['base_url'];
         $videos['options']=$options;
+        
+        //add along channel data!
+        $channel_ids = array();
+        foreach($videos['request_result'] as $result){
+           $channel_ids[] = $result['channel_id'];
+        }
+        $query='SELECT id, hash, name FROM channels WHERE id IN('.implode(',',$channel_ids).')';
+        $channels = $db->query($query,$params);
+        $channels_array = array();
+        foreach($channels['request_result'] as $channel){
+            $channels_array[$channel['id']]=array(
+                'name'=>$channel['name'],
+                'hash'=>$channel['hash'],
+            );
+        }
+        foreach($videos['request_result'] as $key => $result){
+           $videos['request_result'][$key]['channel_hash'] = $channels_array[$result['channel_id']]['hash'];
+           $videos['request_result'][$key]['channel_name'] = $channels_array[$result['channel_id']]['name'];
+        }
 
+        //echo '<pre>'.print_r($videos,true).'</pre>';
+        
         return $videos;
     }
 
@@ -196,12 +217,14 @@ class Video{
     }
 
     function show_video_thumb($upload_info){
+        //var_dump($upload_info);
         global $main_domain;
 
         $datfile_num = find_place_according_to_index($upload_info['file_md5'], 'videos_index.dat');
         $video_info = get_element_info($upload_info['file_md5'], $datfile_num);
 
         $videourl = 'https://' . $main_domain.'/video/' . $upload_info['hash'];
+        $channelurl = 'https://' . $main_domain.'/channel/' . $upload_info['channel_name'];
 
         $suspended='';
         if($upload_info['suspend']!=0){
@@ -232,17 +255,46 @@ class Video{
                 $ready='<div class="video_suspend_container">'.$reason.'</a></div>';
             }
 
-            //print_r($video_info);
+            $dbDate = new DateTime($upload_info['created']);
+            $currDate = new DateTime();
+            $interval = $currDate->diff($dbDate);
+            //$ago_time = $interval->d." days ".$interval->h." hours ago";
+            if($interval->d >= 1){
+                $x_ago = $interval->d;
+                if($interval->d > 1){
+                    $x_unit = __('days');
+                }else{
+                    $x_unit = __('day');
+                }
+            }else{
+                $x_ago = $interval->h;
+                if($interval->h > 1){
+                    $x_unit = __('hours');
+                }else{
+                    $x_unit = __('hour');
+                }
+            }
+            $show_ago = __('%1 %2 ago',$x_ago,$x_unit);
 
             $video_details='
-            <div class="video_title_container"><a href="'.$videourl.'">'.htmlspecialchars($upload_info['title']).'</a></div>';
+            <div class="video_title_container">
+                <a href="'.$videourl.'">'.htmlspecialchars($upload_info['title']).'</a>
+            </div>
+            <div class="video_poster_container">
+                <div class="video_poster_channel">
+                    <a href="'.$channelurl.'">'.htmlspecialchars($upload_info['channel_name']).'</a>
+                </div>
+                <div class="video_poster_time">
+                    '.$show_ago.'
+                </div>
+            </div>';
         }
 
 
 
-        $html='<div class="video_thumb">
+        $html='<div class="video_thumb"><div class="video_thumb_inner"><div class="video_thumb_inner_inner">
             '.$thumb_img.$video_details.$suspended.$video_not_found.$ready.'
-        </div>';
+        </div></div></div>';
 
         return $html;
     }

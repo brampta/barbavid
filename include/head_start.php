@@ -7,6 +7,9 @@ $db->disconnect();
 echo '<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.ellipsis.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
     <script type="text/javascript" src="/js/translations.js?lang='.$language.'"></script>
     <script type="text/javascript" src="/js/nav.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css?v='.filemtime(BP.'/web/css/style.css').'" />';

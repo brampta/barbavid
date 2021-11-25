@@ -80,3 +80,8 @@
 "ie: https://url.to/video/file.mp4","ex: https://url.du/fichier/video.mp4"
 "embed channel","integrer cette chaîne à une page"
 "use this code to embed this channel","utilisez ce code pour integrer cette chaîne à une page"
+"day","jour"
+"days","jours"
+"hour","heure"
+"hours","heures"
+"%1 %2 ago","il y a %1 %2"

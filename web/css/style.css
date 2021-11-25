@@ -191,51 +191,81 @@ input[type=submit] {
     display:inline-block;
     width:1200px;
 }
+.video_thumb {
+    width: 300px;
+    display:inline-block;
+    vertical-align: top;
+    padding: 0;
+}
+.video_thumb_inner {
+    padding: 8px;
+}
+.video_thumb_inner_inner {
+    border: 1px #222 solid;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 @media only screen and (max-width: 1199px) {
     .video_thumbs_container_inner {
         width: 1050px;
+    }
+    .video_thumb {
+        width: 350px;
     }
 }
 @media only screen and (max-width: 1049px) {
     .video_thumbs_container_inner {
         width: 900px;
     }
+    .video_thumb {
+        width: 300px;
+    }
 }
 @media only screen and (max-width: 899px) {
     .video_thumbs_container_inner {
         width: 750px;
+    }
+    .video_thumb {
+        width: 375px;
     }
 }
 @media only screen and (max-width: 749px) {
     .video_thumbs_container_inner {
         width: 600px;
     }
+    .video_thumb {
+        width: 300px;
+    }
 }
 @media only screen and (max-width: 599px) {
     .video_thumbs_container_inner {
-        width: 450px;
+        width: 390px;
+    }
+    .video_thumb {
+        width: 390px;
     }
 }
 @media only screen and (max-width: 449px) {
     .video_thumbs_container_inner {
         width: 300px;
     }
+    .video_thumb {
+        width: 300px;
+    }
 }
 
 
-
-.video_thumb {
-    display:inline-block;
-    vertical-align: top;
-    width:150px;
-}
 .video_thumb_container {
-    width:128px;
-    left: 10px;
     position: relative;
+    padding: 0;
+    
 }
-video_thumb_img {
-    width:128px;
+
+.video_thumb_img {
+    /*width:128px;*/
+    max-width:100%;
 }
 
 .video_suspend_container, .video_error_container {
@@ -243,14 +273,17 @@ video_thumb_img {
 }
 
 .video_title_container {
-    height:60px;
-    width:128px;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    left: 10px;
-    position: relative;
+    font-size:14px;
+    padding: 10px;
+}
+
+.video_poster_container {
+    padding: 10px;
+    font-size:12px;
+}
+
+.video_poster_channel {
+    padding-bottom: 10px;
 }
 
 .video, .video_edit {

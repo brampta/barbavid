@@ -148,9 +148,9 @@ if($chunknumber<$howmany_chunks){
     }
 }
 
+$page_title = htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0];
 include(BP.'/include/head_start.php');
-echo '<title>' . htmlspecialchars(($upload_info['title'])) . ' - Barbavid - ' . $text[0] . '</title>
-<script type="text/javascript" src="/js/video_js2.js"></script>
+echo '<script type="text/javascript" src="/js/video_js2.js"></script>
 <script type="text/javascript" src="/js/language_video_js.php?lang=' . urlencode($language) . '"></script>
 <script type="text/javascript" src="/js/maketimus.js"></script>
 <script type="text/javascript" src="/js/language_maketimus_js.php?lang='.urlencode($language).'"></script>

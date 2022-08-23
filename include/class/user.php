@@ -345,7 +345,7 @@ class User{
                 //rotate token
                 $token = bin2hex(random_bytes(32));
                 setcookie("remember_me_token", $token, time()+31536000, '/', '.'.$main_domain);
-                $db->delete('remember_me_codes',$remember_me_code_data_array['id']);
+                //$db->delete('remember_me_codes',$remember_me_code_data_array['id']);
                 $remember_me_code_data_array=array();
                 $remember_me_code_data_array['user_id']=$_SESSION['user_id'];
                 $remember_me_code_data_array['code']=$token;

@@ -414,7 +414,7 @@ if ($state=='deleted') {
                     <div id="embed_code_div" style="display:none;position:absolute;left:0;right:0;margin-left:auto;margin-right:auto;" class="poppy_info">
                         <div style="right:0;margin-right:0;text-align:right;"><a style="cursor:pointer;" onclick="toggle_embed()">[x]</a></div>
                         ' . $text[153] . ':<br />
-                        <textarea style="width:300px;height:90px;">&#60;iframe src="https://'.$main_domain.'/video/'.$upload_hash.'?embed=1" style="width:640px;height:540px;">&#60;/iframe></textarea>
+                        <textarea style="width:300px;height:90px;">&#60;iframe src="https://'.$main_domain.'/video/'.$upload_hash.'?embed=1" style="width:640px;height:540px;" allowfullscreen>&#60;/iframe></textarea>
                     </div>
                     |
                     <a href="/duplicate?upload='.$upload_hash.'" target="_blank">' . $text[152] . '</a>

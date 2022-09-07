@@ -10,6 +10,8 @@ if(!defined('SETTINGS_RUN')){
 
     $admin_ip='127.0.0.1'; //to be removed eventually but still used, on local could be 127.0.0.1, on server use your home IP
     $admin_ids=array(13=>2,13=>1); //user_id=>admin level.
+    define('LOCAL_ADMIN_EMAIL','joblo@localhost'); //set to null to deactivate local admin emails
+
     //progressively moving to user_id based admin rights which will be safer than ip based
     //$upload_exire_after_x_days_of_inactiv=120;
     //$upload_exire_after_x_days_of_inactiv=365*2;

@@ -59,6 +59,9 @@ class User{
                         $message->add_message('error', __('database error'));
                     } else {
                         $this->do_send_validation_email($id, $email, $name);
+                        if(LOCAL_ADMIN_EMAIL){
+                            mail(LOCAL_ADMIN_EMAIL,$site_name.' registration '.$_POST['name'],'User '.$_POST['name'].' has just registered, IP: '.$_SERVER['REMOTE_ADDR']);
+                        }
 
                         $return_data['success'] = true;
                         $message->add_message('success', __('successfully registered'));
@@ -103,6 +106,11 @@ class User{
             }else{
                 $return_data['success']=true;
                 $message->add_message('success',__('successfully validated email'));
+
+                if(LOCAL_ADMIN_EMAIL){
+                    mail(LOCAL_ADMIN_EMAIL,$site_name.' registration validation '.$user_data_array['name'],'User '.$user_data_array['name'].' has just registered, IP: '.$_SERVER['REMOTE_ADDR']);
+                }
+
                 //$_SESSION['user_id']=$validation_code_data_array['user_id'];
                 //$_SESSION['name']=$user_data_array['name'];
                 $this->set_user_session($user_data_array);

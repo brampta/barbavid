@@ -5,7 +5,7 @@ class User{
 
 
     public function register($email,$name,$password,$password2){
-        global $db, $message;
+        global $db, $message, $site_name;
         $return_data=array('success'=>false,'errors'=>array());
 
         if(
@@ -60,7 +60,7 @@ class User{
                     } else {
                         $this->do_send_validation_email($id, $email, $name);
                         if(LOCAL_ADMIN_EMAIL){
-                            mail(LOCAL_ADMIN_EMAIL,$site_name.' registration '.$_POST['name'],'User '.$_POST['name'].' has just registered, IP: '.$_SERVER['REMOTE_ADDR']);
+                            mail(LOCAL_ADMIN_EMAIL,$site_name.' registration '.$name,'User '.$name.' has just registered, email: '.$email.', IP: '.$_SERVER['REMOTE_ADDR']);
                         }
 
                         $return_data['success'] = true;
@@ -75,7 +75,7 @@ class User{
     }
 
     public function validate_email($code){
-        global $db, $message;
+        global $db, $message, $site_name;
         $return_data=array('success'=>false,'errors'=>array());
 
         //first drop all validation codes older than 24h...
@@ -108,7 +108,7 @@ class User{
                 $message->add_message('success',__('successfully validated email'));
 
                 if(LOCAL_ADMIN_EMAIL){
-                    mail(LOCAL_ADMIN_EMAIL,$site_name.' registration validation '.$user_data_array['name'],'User '.$user_data_array['name'].' has just registered, IP: '.$_SERVER['REMOTE_ADDR']);
+                    mail(LOCAL_ADMIN_EMAIL,$site_name.' registration validation '.$user_data_array['name'],'User '.$user_data_array['name'].' has just validated his regsitration, email: '.$user_data_array['email'].', IP: '.$_SERVER['REMOTE_ADDR']);
                 }
 
                 //$_SESSION['user_id']=$validation_code_data_array['user_id'];

@@ -8,7 +8,6 @@ class User{
         global $db, $message, $site_name;
         $return_data=array('success'=>false,'errors'=>array());
 
-        var_dump('md5($image_verif)',md5($image_verif),'$_SESSION[\'img_ver_reg\']',$_SESSION['img_ver_reg']);
         if(md5($image_verif)!=$_SESSION['img_ver_reg']){
             $return_data['errors'][] = 'imagever_error';
             $message->add_message('error', __('please retype the number correctly'));

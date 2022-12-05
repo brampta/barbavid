@@ -3,7 +3,7 @@ include(dirname(dirname(dirname(__FILE__))).'/include/init.php');
 include(BP.'/include/function/forms.php');
 
 if(isset($_POST['email'])){
-    $user_registration = $user->register($_POST['email'],$_POST['name'],$_POST['password'],$_POST['password2']);
+    $user_registration = $user->register($_POST['email'],$_POST['name'],$_POST['password'],$_POST['password2'],$_POST['image_verif']);
 }
 
 $page_title = __('register account');
@@ -22,6 +22,7 @@ if(!isset($user_registration) || $user_registration['success']!=true){
             <div class="user_form_input"><label for="name"><?php echo __('name:') ?></label><input id="name" name="name" type="text" value="<?php echo reget_post('name') ?>"></div>
             <div class="user_form_input"><label for="password"><?php echo __('password:') ?></label><input id="password" name="password" type="password" value="<?php echo reget_post('password') ?>"></div>
             <div class="user_form_input"><label for="password2"><?php echo __('retype password:') ?></label><input id="password2" name="password2" type="password" value="<?php echo reget_post('password2') ?>"></div>
+            <div class="user_form_input"><label for="password2"><?php echo __('retype this number:') ?></label><img src="/image_verification?name=reg" /> => <input id="image_verif" name="image_verif" type="number"></div>
             <div class="user_form_submit"><input type="submit" value="<?php echo __('register') ?>"></div>
         </form>
     </div>

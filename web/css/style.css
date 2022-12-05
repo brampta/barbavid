@@ -158,6 +158,7 @@ a[onclick] {cursor:pointer;}
 .user_form_input {margin-top:10px}
 .user_form_input label {display:inline-block;width:38%;}
 .user_form_input input {display:inline-block;width:58%;}
+.user_form_input input#image_verif {width:120px;max-width:38%;}
 .user_form_submit {text-align: center;margin-top:20px;}
 .user_form_submit input {height:40px;}
 .user_form_link {text-align: center;margin-top:20px;}

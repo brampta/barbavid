@@ -4,11 +4,15 @@
 class User{
 
 
-    public function register($email,$name,$password,$password2){
+    public function register($email,$name,$password,$password2,$image_verif){
         global $db, $message, $site_name;
         $return_data=array('success'=>false,'errors'=>array());
 
-        if(
+        var_dump('md5($image_verif)',md5($image_verif),'$_SESSION[\'img_ver_reg\']',$_SESSION['img_ver_reg']);
+        if(md5($image_verif)!=$_SESSION['img_ver_reg']){
+            $return_data['errors'][] = 'imagever_error';
+            $message->add_message('error', __('please retype the number correctly'));
+        }else if(
             !$this->validate_value('email',$email)
             || !$this->validate_value('name',$name)
             || !$this->validate_value('password',$password)
